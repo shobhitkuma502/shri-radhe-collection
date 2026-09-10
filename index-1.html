@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Shri Radhe Collection — Cloud Control Account</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:#f4f6fb;color:#18202a}
+header{background:#fff;border-bottom:1px solid #e5e7eb;padding:14px 16px;position:sticky;top:0;z-index:5}
+h1,h2,h3{margin-top:0}.wrap{max-width:1100px;margin:auto;padding:16px}
+.card{background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:16px;margin:12px 0;box-shadow:0 4px 18px #00000008}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.actions{display:flex;gap:8px;flex-wrap:wrap}
+button{border:0;border-radius:10px;padding:11px 14px;background:#5b35d5;color:white;font-weight:600}
+button.alt{background:#eef0f5;color:#222}.danger{background:#dc2626}.muted{color:#6b7280;font-size:14px}
+input,select{width:100%;padding:11px;border:1px solid #d9dde5;border-radius:10px;margin:5px 0 10px;background:white}
+table{width:100%;border-collapse:collapse}th,td{padding:9px;border-bottom:1px solid #eee;text-align:left}
+#auth{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:18px}
+.auth{width:min(460px,100%)}#app{display:none}.pill{display:inline-block;padding:5px 9px;border-radius:999px;background:#eef0f5;font-size:12px}
+@media(max-width:700px){.grid{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<div id="auth">
+  <div class="card auth">
+    <h1>Shri Radhe Collection</h1>
+    <p class="muted">Cloud Control Account — Owner Login</p>
+    <label>Email</label><input id="email" type="email" placeholder="आपका email">
+    <label>Password</label><input id="password" type="password" placeholder="कम से कम 6 characters">
+    <div class="actions">
+      <button onclick="signup()">पहली बार Account बनाएं</button>
+      <button class="alt" onclick="login()">Login</button>
+    </div>
+    <p id="authMsg" class="muted"></p>
+  </div>
+</div>
+
+<div id="app">
+<header>
+  <div class="wrap">
+    <strong>Shri Radhe Collection</strong>
+    <span class="pill" id="status">Cloud connecting…</span>
+    <button class="alt" style="float:right" onclick="logout()">Logout</button>
+  </div>
+</header>
+<main class="wrap">
+  <div class="grid">
+    <div class="card"><div class="muted">Parties</div><h2 id="partyCount">0</h2></div>
+    <div class="card"><div class="muted">Sales</div><h2 id="salesTotal">₹0</h2></div>
+    <div class="card"><div class="muted">Received</div><h2 id="receivedTotal">₹0</h2></div>
+    <div class="card"><div class="muted">Outstanding</div><h2 id="outstanding">₹0</h2></div>
+  </div>
+
+  <div class="card">
+    <div class="actions">
+      <button onclick="show('parties')">Parties</button>
+      <button onclick="show('sales')">Sale Bills</button>
+      <button onclick="show('receipts')">Receipts</button>
+      <button onclick="show('ledger')">Ledger</button>
+    </div>
+  </div>
+
+  <section id="parties">
+    <div class="card">
+      <h2>Party Management</h2>
+      <div class="grid">
+        <div><label>Name</label><input id="pname"></div>
+        <div><label>Mobile</label><input id="pmobile"></div>
+        <div><label>GST</label><input id="pgst"></div>
+        <div><label>Opening Balance</label><input id="popen" type="number" value="0"></div>
+      </div>
+      <label>Address</label><input id="paddr">
+      <label>Group</label><select id="pgroup"></select>
+      <button onclick="addParty()">Party Save करें</button>
+    </div>
+    <div class="card"><h3>All Parties</h3><div id="partyTable"></div></div>
+  </section>
+
+  <section id="sales" style="display:none">
+    <div class="card">
+      <h2>Sale Bill</h2>
+      <label>Party</label><select id="sparty"></select>
+      <div class="grid">
+        <div><label>Bill No.</label><input id="sbill"></div>
+        <div><label>Date</label><input id="sdate" type="date"></div>
+        <div><label>Amount</label><input id="stotal" type="number"></div>
+        <div><label>Payment Mode</label><select id="smode"><option>Credit</option><option>Cash</option><option>UPI</option><option>Bank</option></select></div>
+      </div>
+      <button onclick="addSale()">Sale Save करें</button>
+    </div>
+    <div class="card"><div id="salesTable"></div></div>
+  </section>
+
+  <section id="receipts" style="display:none">
+    <div class="card">
+      <h2>Customer Receipt</h2>
+      <label>Party</label><select id="rparty"></select>
+      <div class="grid">
+        <div><label>Receipt No.</label><input id="rno"></div>
+        <div><label>Date</label><input id="rdate" type="date"></div>
+        <div><label>Amount</label><input id="ramount" type="number"></div>
+        <div><label>Payment Mode</label><select id="rmode"><option>Cash</option><option>UPI</option><option>Bank</option></select></div>
+      </div>
+      <button onclick="addReceipt()">Receipt Save करें</button>
+    </div>
+    <div class="card"><div id="receiptTable"></div></div>
+  </section>
+
+  <section id="ledger" style="display:none">
+    <div class="card">
+      <h2>Party Ledger</h2>
+      <label>Party</label><select id="lparty" onchange="renderLedger()"></select>
+      <div id="ledgerTable"></div>
+    </div>
+  </section>
+</main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL="https://rpiviexppewafvaacgkg.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY="sb_publishable_libqJNEbhBBkAgzxP6de9Q_Y5VdhGSd";
+const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
+let SHOP_ID=null, parties=[], groups=[], sales=[], receipts=[];
+
+const $=id=>document.getElementById(id);
+const money=n=>"₹"+Number(n||0).toLocaleString("en-IN",{maximumFractionDigits:2});
+const today=()=>new Date().toISOString().slice(0,10);
+$("sdate").value=today(); $("rdate").value=today();
+
+function msg(t){$("authMsg").textContent=t}
+function status(t){$("status").textContent=t}
+
+async function signup(){
+  const email=$("email").value.trim(),password=$("password").value;
+  if(!email||password.length<6)return msg("Email और कम से कम 6 characters का password डालें।");
+  const {data,error}=await sb.auth.signUp({email,password});
+  if(error)return msg(error.message);
+  if(data.session) await start();
+  else msg("Account बन गया। Email verification मांगे तो email verify करके Login करें।");
+}
+async function login(){
+  const email=$("email").value.trim(),password=$("password").value;
+  if(!email||!password)return msg("Email और password डालें।");
+  const {error}=await sb.auth.signInWithPassword({email,password});
+  if(error)return msg(error.message);
+  await start();
+}
+async function start(){
+  status("Cloud connecting…");
+  const {data,error}=await sb.rpc("create_owner_shop",{
+    p_name:"Shri Radhe Collection",
+    p_address:"Neminath Catla, Uniara Rd, Nainwa, Bundi",
+    p_phone:"6376107751"
+  });
+  if(error){msg(error.message);return}
+  SHOP_ID=data;
+  $("auth").style.display="none";$("app").style.display="block";
+  await load();
+}
+async function load(){
+  status("Loading cloud…");
+  const [g,p,s,r]=await Promise.all([
+    sb.from("groups").select("id,name").eq("shop_id",SHOP_ID).order("name"),
+    sb.from("parties").select("*").eq("shop_id",SHOP_ID).order("created_at"),
+    sb.from("sales").select("*").eq("shop_id",SHOP_ID).order("bill_date"),
+    sb.from("receipts").select("*").eq("shop_id",SHOP_ID).order("receipt_date")
+  ]);
+  for(const x of [g,p,s,r])if(x.error){msg(x.error.message);status("Cloud error");return}
+  groups=g.data||[];parties=p.data||[];sales=s.data||[];receipts=r.data||[];
+  fillSelects();renderAll();status("Cloud Connected ✓");
+}
+function fillSelects(){
+  $("pgroup").innerHTML=groups.map(x=>`<option value="${x.id}">${x.name}</option>`).join("");
+  const opts=parties.map(x=>`<option value="${x.id}">${esc(x.name)} — ${esc(x.mobile)}</option>`).join("");
+  ["sparty","rparty","lparty"].forEach(id=>$(id).innerHTML=opts);
+}
+function esc(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
+async function addParty(){
+  const name=$("pname").value.trim(),mobile=$("pmobile").value.trim();
+  if(!name||!mobile)return alert("Party Name और Mobile जरूरी है।");
+  const {error}=await sb.from("parties").insert({
+    shop_id:SHOP_ID,group_id:$("pgroup").value,name,mobile,
+    gst:$("pgst").value.trim(),opening_balance:Number($("popen").value||0),address:$("paddr").value.trim()
+  });
+  if(error)return alert(error.message);
+  ["pname","pmobile","pgst","paddr","popen"].forEach(id=>$(id).value="");
+  await load();
+}
+async function addSale(){
+  const total=Number($("stotal").value);
+  if(!total)return alert("Amount डालें।");
+  const {error}=await sb.from("sales").insert({
+    shop_id:SHOP_ID,party_id:$("sparty").value,bill_no:$("sbill").value.trim(),
+    bill_date:$("sdate").value,total,payment_mode:$("smode").value,note:""
+  });
+  if(error)return alert(error.message);await load();
+}
+async function addReceipt(){
+  const amount=Number($("ramount").value);
+  if(!amount)return alert("Amount डालें।");
+  const {error}=await sb.from("receipts").insert({
+    shop_id:SHOP_ID,party_id:$("rparty").value,receipt_no:$("rno").value.trim(),
+    receipt_date:$("rdate").value,amount,payment_mode:$("rmode").value,note:""
+  });
+  if(error)return alert(error.message);await load();
+}
+function balance(p){
+  return Number(p.opening_balance||0)
+    +sales.filter(x=>x.party_id===p.id).reduce((a,x)=>a+Number(x.total),0)
+    -receipts.filter(x=>x.party_id===p.id).reduce((a,x)=>a+Number(x.amount),0);
+}
+function renderAll(){
+  $("partyCount").textContent=parties.length;
+  $("salesTotal").textContent=money(sales.reduce((a,x)=>a+Number(x.total),0));
+  $("receivedTotal").textContent=money(receipts.reduce((a,x)=>a+Number(x.amount),0));
+  $("outstanding").textContent=money(parties.reduce((a,p)=>a+Math.max(0,balance(p)),0));
+  $("partyTable").innerHTML=`<table><tr><th>Party</th><th>Mobile</th><th>Group</th><th>Outstanding</th></tr>`+
+    parties.map(p=>`<tr><td>${esc(p.name)}</td><td>${esc(p.mobile)}</td><td>${esc(groups.find(g=>g.id===p.group_id)?.name||"")}</td><td>${money(Math.max(0,balance(p)))}</td></tr>`).join("")+"</table>";
+  $("salesTable").innerHTML=`<table><tr><th>Date</th><th>Bill</th><th>Party</th><th>Amount</th></tr>`+
+    sales.map(x=>`<tr><td>${x.bill_date}</td><td>${esc(x.bill_no)}</td><td>${esc(parties.find(p=>p.id===x.party_id)?.name||"")}</td><td>${money(x.total)}</td></tr>`).join("")+"</table>";
+  $("receiptTable").innerHTML=`<table><tr><th>Date</th><th>Receipt</th><th>Party</th><th>Amount</th></tr>`+
+    receipts.map(x=>`<tr><td>${x.receipt_date}</td><td>${esc(x.receipt_no)}</td><td>${esc(parties.find(p=>p.id===x.party_id)?.name||"")}</td><td>${money(x.amount)}</td></tr>`).join("")+"</table>";
+  renderLedger();
+}
+function renderLedger(){
+  const id=$("lparty").value;if(!id){$("ledgerTable").innerHTML="";return}
+  const p=parties.find(x=>x.id===id);if(!p)return;
+  let running=Number(p.opening_balance||0);
+  const entries=[
+    ...sales.filter(x=>x.party_id===id).map(x=>({date:x.bill_date,no:x.bill_no,type:"Sale",amount:Number(x.total),sign:1})),
+    ...receipts.filter(x=>x.party_id===id).map(x=>({date:x.receipt_date,no:x.receipt_no,type:"Received",amount:Number(x.amount),sign:-1}))
+  ].sort((a,b)=>a.date.localeCompare(b.date)||a.no.localeCompare(b.no));
+  let rows="";
+  for(const e of entries){running+=e.sign*e.amount;rows+=`<tr><td>${e.date}</td><td>${esc(e.no)}</td><td>${e.type}</td><td>${money(e.amount)}</td><td>${money(running)}</td></tr>`}
+  $("ledgerTable").innerHTML=`<p><b>${esc(p.name)}</b> — Current Amount: <b>${money(Math.max(0,running))}</b></p>
+  <div style="overflow:auto"><table><tr><th>Bill/Receipt Date</th><th>Particular Bill/Receipt No.</th><th>Type</th><th>Amount Bill/Receipt</th><th>Total Amount</th></tr>${rows||'<tr><td colspan="5">कोई entry नहीं है।</td></tr>'}</table></div>`;
+}
+function show(id){["parties","sales","receipts","ledger"].forEach(x=>$(x).style.display=x===id?"block":"none");}
+async function logout(){await sb.auth.signOut();location.reload()}
+sb.auth.getSession().then(async ({data})=>{if(data.session)await start()});
+</script>
+</body>
+</html>
