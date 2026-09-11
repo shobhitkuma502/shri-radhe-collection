@@ -3,304 +3,587 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Shri Radhe Collection — Cloud Control Account</title>
+<title>Shri Radhe Collection — Professional Clothing Accounts</title>
 <style>
-*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:#f4f6fb;color:#18202a}
-header{background:#fff;border-bottom:1px solid #e5e7eb;padding:14px 16px;position:sticky;top:0;z-index:5}
-h1,h2,h3{margin-top:0}.wrap{max-width:1100px;margin:auto;padding:16px}
-.card{background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:16px;margin:12px 0;box-shadow:0 4px 18px #00000008}
-.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.actions{display:flex;gap:8px;flex-wrap:wrap}
-button{border:0;border-radius:10px;padding:11px 14px;background:#5b35d5;color:white;font-weight:600}
-button.alt{background:#eef0f5;color:#222}.danger{background:#dc2626}.muted{color:#6b7280;font-size:14px}
-input,select{width:100%;padding:11px;border:1px solid #d9dde5;border-radius:10px;margin:5px 0 10px;background:white}
-table{width:100%;border-collapse:collapse}th,td{padding:9px;border-bottom:1px solid #eee;text-align:left}
-#auth{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:18px}
-.auth{width:min(460px,100%)}#app{display:none}.pill{display:inline-block;padding:5px 9px;border-radius:999px;background:#eef0f5;font-size:12px}
-@media(max-width:700px){.grid{grid-template-columns:repeat(2,1fr)}}
+:root{--bg:#f4f1f2;--panel:#fff;--ink:#241b1d;--muted:#75676b;--line:#e6dde0;--brand:#6f2034;--brand2:#8c3049;--brandSoft:#f5e7eb;--good:#19734b;--bad:#b4232f;--warn:#9a6300}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+button,input,select,textarea{font:inherit}button{cursor:pointer}
+.topbar{background:linear-gradient(135deg,#6f2034,#8c3049);color:#fff;position:sticky;top:0;z-index:30;box-shadow:0 3px 16px #3d162040}
+.topbar-inner{max-width:1450px;margin:auto;padding:14px 18px;display:flex;align-items:center;gap:15px}
+.brand{font-weight:850;font-size:21px;white-space:nowrap}.brand small{display:block;font-size:11px;font-weight:500;opacity:.88;margin-top:2px}
+.top-actions{margin-left:auto;display:flex;gap:8px;align-items:center}.chip{padding:7px 10px;border-radius:999px;background:#ffffff16;font-size:12px}
+.layout{max-width:1450px;margin:auto;display:grid;grid-template-columns:245px 1fr;min-height:calc(100vh - 68px)}
+.sidebar{background:#fff;border-right:1px solid var(--line);padding:14px;position:sticky;top:68px;height:calc(100vh - 68px);overflow:auto}
+.navtitle{font-size:11px;color:#9e8e93;text-transform:uppercase;font-weight:850;padding:11px 10px 5px;letter-spacing:.65px}
+.navbtn{width:100%;border:0;background:transparent;text-align:left;padding:11px 12px;border-radius:10px;color:#51464a;font-weight:700;margin:2px 0}.navbtn:hover,.navbtn.active{background:var(--brandSoft);color:var(--brand)}
+.main{padding:20px}.view{display:none}.view.active{display:block}
+.page-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:15px}.page-head h2{margin:0}
+.muted{color:var(--muted);font-size:13px}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:15px;padding:15px;box-shadow:0 4px 18px #4b26300a}
+.metric-label{font-size:12px;color:var(--muted)}.metric{font-size:25px;font-weight:850;margin-top:5px}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 14px}
+.btn{border:0;border-radius:9px;padding:10px 13px;background:var(--brand);color:#fff;font-weight:800}.btn.light{background:#eee7e9;color:#3b3034}.btn.green{background:var(--good)}.btn.red{background:var(--bad)}.btn.warn{background:var(--warn)}
+input,select,textarea{width:100%;padding:10px 11px;border:1px solid #d9cfd3;border-radius:9px;background:#fff;outline:none}
+input:focus,select:focus,textarea:focus{border-color:#9d5267;box-shadow:0 0 0 3px #8c304918}
+label{font-size:12px;font-weight:800;color:#5a4c50}.formgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.span2{grid-column:span 2}.span3{grid-column:1/-1}
+.tablewrap{overflow:auto;border:1px solid var(--line);border-radius:12px}table{width:100%;border-collapse:collapse;min-width:760px}
+th,td{padding:10px 11px;border-bottom:1px solid #eee5e8;text-align:left;font-size:13px;vertical-align:middle}th{background:#faf7f8;color:#625359;font-size:12px;position:sticky;top:0}
+tbody tr:hover{background:#fdf9fa}.num,.text-right{text-align:right}.due{color:var(--bad);font-weight:850}.credit{color:var(--good);font-weight:850}
+.kpi-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.kpi{padding:12px;border:1px dashed #decfd4;border-radius:12px}.kpi strong{display:block;font-size:20px;margin-top:3px}
+.quick{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.quick button{text-align:left;padding:15px}.quick span{font-size:12px;font-weight:500;opacity:.85}.quick b{display:block;margin-top:4px}
+.day-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:9px}.day-card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px;min-height:122px}.day-card h4{margin:0 0 7px}.day-card .count{font-size:24px;font-weight:900}
+.modal{position:fixed;inset:0;background:#12080d99;display:none;align-items:center;justify-content:center;z-index:60;padding:14px}.modal.show{display:flex}
+.sheet{background:#fff;width:min(1150px,100%);max-height:95vh;overflow:auto;border-radius:17px;padding:18px}.x{float:right;border:0;background:#eee7e9;border-radius:50%;width:32px;height:32px;font-size:18px}
+.notice{padding:10px 12px;background:#fff8e9;border:1px solid #efdfaf;border-radius:10px;color:#735e1d;font-size:12px}
+.flow-step{border-left:4px solid var(--brand);background:#fbf7f8;padding:12px;border-radius:10px;margin-top:10px}
+.voucher-top{display:grid;grid-template-columns:1.2fr .8fr 1fr;gap:10px;align-items:end}
+.big-number{font-size:27px;font-weight:900;color:var(--brand)}
+.print-sheet{background:#fff;color:#111;padding:25px;max-width:900px;margin:auto;border:1px solid #ddd}.day-preview{margin-top:5px}
+.print-head{display:flex;justify-content:space-between;border-bottom:2px solid #111;padding-bottom:12px;margin-bottom:12px}.print-head h1{margin:0;font-size:24px}
+.print-table{width:100%;border-collapse:collapse}.print-table th,.print-table td{border:1px solid #bdbdbd;padding:8px;font-size:12px}
+.print-totals{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}.print-total{border:1px solid #bbb;padding:9px}.print-total b{display:block;font-size:17px}
+@media(max-width:1050px){.layout{grid-template-columns:1fr}.sidebar{position:sticky;top:68px;height:auto;display:flex;overflow:auto;padding:8px;border-right:0;border-bottom:1px solid var(--line);z-index:20}.navtitle{display:none}.navbtn{width:auto;white-space:nowrap}.cards{grid-template-columns:repeat(2,1fr)}.quick{grid-template-columns:repeat(2,1fr)}.day-grid{grid-template-columns:repeat(4,1fr)}}
+@media(max-width:650px){.main{padding:12px}.topbar-inner{padding:11px 12px}.brand{font-size:17px}.top-actions{display:none}.cards,.quick,.kpi-row{grid-template-columns:repeat(2,1fr)}.formgrid,.voucher-top{grid-template-columns:1fr}.span2,.span3{grid-column:auto}.day-grid{grid-template-columns:repeat(2,1fr)}}
+@media print{
+ body{background:#fff}.topbar,.sidebar,.no-print{display:none!important}.layout{display:block}.main{padding:0}.view{display:none!important}.print-target{display:block!important}.card{box-shadow:none;border:0}
+ .print-sheet{border:0;max-width:none;padding:10px}
+}
 </style>
+<script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
 </head>
 <body>
-<div id="auth">
-  <div class="card auth">
-    <h1>Shri Radhe Collection</h1>
-    <p class="muted">Cloud Control Account — Owner Login</p>
-    <label>Email</label><input id="email" type="email" autocomplete="email" placeholder="आपका email">
-    <label>Password</label><input id="password" type="password" autocomplete="new-password" placeholder="कम से कम 6 characters">
-    <div class="actions">
-      <button id="signupBtn" onclick="signup()">पहली बार Account बनाएं</button>
-      <button id="loginBtn" class="alt" onclick="login()">Login</button>
-      <button id="resendBtn" class="alt" onclick="resendVerification()" style="display:none">Verification Email दोबारा भेजें</button>
-    </div>
-    <p id="authMsg" class="muted"></p>
-  </div>
+<header class="topbar">
+<div class="topbar-inner">
+<div class="brand">Shri Radhe Collection<small>Neminath Catla, Uniara Rd, Nainwa, Bundi • Con. 6376107751</small></div>
+<div class="top-actions"><span class="chip" id="todayChip"></span><span class="chip">Professional Clothing Accounts</span></div>
 </div>
-
-<div id="app">
-<header>
-  <div class="wrap">
-    <strong>Shri Radhe Collection</strong>
-    <span class="pill" id="status">Cloud connecting…</span>
-    <button class="alt" style="float:right" onclick="logout()">Logout</button>
-  </div>
 </header>
-<main class="wrap">
-  <div class="grid">
-    <div class="card"><div class="muted">Parties</div><h2 id="partyCount">0</h2></div>
-    <div class="card"><div class="muted">Sales</div><h2 id="salesTotal">₹0</h2></div>
-    <div class="card"><div class="muted">Received</div><h2 id="receivedTotal">₹0</h2></div>
-    <div class="card"><div class="muted">Outstanding</div><h2 id="outstanding">₹0</h2></div>
-  </div>
 
-  <div class="card">
-    <div class="actions">
-      <button onclick="show('parties')">Parties</button>
-      <button onclick="show('sales')">Sale Bills</button>
-      <button onclick="show('receipts')">Receipts</button>
-      <button onclick="show('ledger')">Ledger</button>
-    </div>
-  </div>
+<div class="layout">
+<aside class="sidebar">
+<div class="navtitle">Opening</div>
+<button class="navbtn active" onclick="go('home')">⌂ Dashboard</button>
+<div class="navtitle">Vouchers</div>
+<button class="navbtn" onclick="startSale()">＋ Sale</button>
+<button class="navbtn" onclick="startReceipt()">₹ Receipt</button>
+<button class="navbtn" onclick="startPurchase()">▣ Purchase</button>
+<button class="navbtn" onclick="go('voucher')">◇ Voucher</button>
+<div class="navtitle">Accounts</div>
+<button class="navbtn" onclick="go('ledger')">☷ Ledger</button>
+<button class="navbtn" onclick="go('parties')">👥 Parties</button>
+<button class="navbtn" onclick="go('daygroups')">◷ Day Groups</button>
+<div class="navtitle">Business</div>
+<button class="navbtn" onclick="go('items')">▤ Items / Stock</button>
+<button class="navbtn" onclick="go('reports')">▥ Reports</button>
+<button class="navbtn" onclick="go('backup')">⇅ Backup / Settings</button>
+</aside>
 
-  <section id="parties">
-    <div class="card">
-      <h2>Party Management</h2>
-      <div class="grid">
-        <div><label>Name</label><input id="pname"></div>
-        <div><label>Mobile</label><input id="pmobile"></div>
-        <div><label>GST</label><input id="pgst"></div>
-        <div><label>Opening Balance</label><input id="popen" type="number" value="0"></div>
-      </div>
-      <label>Address</label><input id="paddr">
-      <label>Group</label><select id="pgroup"></select>
-      <button onclick="addParty()">Party Save करें</button>
-    </div>
-    <div class="card"><h3>All Parties</h3><div id="partyTable"></div></div>
-  </section>
+<main class="main">
 
-  <section id="sales" style="display:none">
-    <div class="card">
-      <h2>Sale Bill</h2>
-      <label>Party</label><select id="sparty"></select>
-      <div class="grid">
-        <div><label>Bill No.</label><input id="sbill"></div>
-        <div><label>Date</label><input id="sdate" type="date"></div>
-        <div><label>Amount</label><input id="stotal" type="number"></div>
-        <div><label>Payment Mode</label><select id="smode"><option>Credit</option><option>Cash</option><option>UPI</option><option>Bank</option></select></div>
-      </div>
-      <button onclick="addSale()">Sale Save करें</button>
-    </div>
-    <div class="card"><div id="salesTable"></div></div>
-  </section>
-
-  <section id="receipts" style="display:none">
-    <div class="card">
-      <h2>Customer Receipt</h2>
-      <label>Party</label><select id="rparty"></select>
-      <div class="grid">
-        <div><label>Receipt No.</label><input id="rno"></div>
-        <div><label>Date</label><input id="rdate" type="date"></div>
-        <div><label>Amount</label><input id="ramount" type="number"></div>
-        <div><label>Payment Mode</label><select id="rmode"><option>Cash</option><option>UPI</option><option>Bank</option></select></div>
-      </div>
-      <button onclick="addReceipt()">Receipt Save करें</button>
-    </div>
-    <div class="card"><div id="receiptTable"></div></div>
-  </section>
-
-  <section id="ledger" style="display:none">
-    <div class="card">
-      <h2>Party Ledger</h2>
-      <label>Party</label><select id="lparty" onchange="renderLedger()"></select>
-      <div id="ledgerTable"></div>
-    </div>
-  </section>
-</main>
+<section id="home" class="view active">
+<div class="page-head"><div><h2>Dashboard</h2><div class="muted">Opening view — पूरा कारोबार एक नजर में</div></div></div>
+<div class="cards">
+<div class="card"><div class="metric-label">आज Sale</div><div class="metric" id="mSale">₹0</div></div>
+<div class="card"><div class="metric-label">आज Receipt</div><div class="metric" id="mReceipt">₹0</div></div>
+<div class="card"><div class="metric-label">आज Purchase</div><div class="metric" id="mPurchase">₹0</div></div>
+<div class="card"><div class="metric-label">Total Customer Due</div><div class="metric due" id="mDue">₹0</div></div>
 </div>
+<div class="card">
+<h3>Quick Voucher Entry</h3>
+<div class="quick" style="margin-top:10px">
+<button class="btn" onclick="startSale()"><span>Sale</span><b>Date → Voucher No. → Party List</b></button>
+<button class="btn green" onclick="startReceipt()"><span>Receipt</span><b>Date → Voucher No. → Party List</b></button>
+<button class="btn light" onclick="startPurchase()"><span>Purchase</span><b>Date → Voucher No. → Supplier</b></button>
+<button class="btn light" onclick="go('voucher')"><span>Voucher</span><b>Date → Voucher No. → Entry</b></button>
+</div>
+</div>
+<div class="cards">
+<div class="card" style="grid-column:span 2"><h3>आज की Entries</h3><div id="todayEntries" style="margin-top:8px"></div></div>
+<div class="card" style="grid-column:span 2"><h3>आज Collection Due</h3><div id="todayDue" style="margin-top:8px"></div></div>
+</div>
+</section>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<section id="sale" class="view">
+<div class="page-head"><div><h2>Sale Bill</h2><div class="muted">Bill sequence automatic रहेगा; manual voucher number बदल सकते हैं</div></div></div>
+<div class="card">
+<div class="voucher-top">
+<div><label>1. Bill Date</label><input id="saleDate" type="date"></div>
+<div><label>2. Voucher / Bill No.</label><input id="saleNo" inputmode="numeric"></div>
+<div><button class="btn" style="width:100%" onclick="openSalePartyPicker()">3. Enter / Next → Party List</button></div>
+</div>
+<div class="flow-step"><b>Sequence:</b> पहला bill save होने के बाद उसी date पर अगला voucher number अपने-आप +1 होकर फिर Party List खुलेगी। Number को किसी भी समय manually बदल सकते हैं.</div>
+</div>
+<div id="salePartyArea"></div>
+</section>
+
+<section id="receipt" class="view">
+<div class="page-head"><div><h2>Receipt Voucher</h2><div class="muted">Date → Voucher No. → Party List → Receive</div></div></div>
+<div class="card">
+<div class="voucher-top">
+<div><label>1. Receipt Date</label><input id="receiptDate" type="date"></div>
+<div><label>2. Voucher / Receipt No.</label><input id="receiptNo" inputmode="numeric"></div>
+<div><button class="btn green" style="width:100%" onclick="openReceiptPartyPicker()">3. Enter / Next → Party List</button></div>
+</div>
+</div>
+<div id="receiptPartyArea"></div>
+</section>
+
+<section id="purchase" class="view">
+<div class="page-head"><div><h2>Purchase</h2><div class="muted">Date → Voucher No. → Supplier → Purchase Entry</div></div></div>
+<div class="card">
+<div class="voucher-top">
+<div><label>1. Purchase Date</label><input id="purchaseDate" type="date"></div>
+<div><label>2. Voucher / Bill No.</label><input id="purchaseNo" inputmode="numeric"></div>
+<div><button class="btn" style="width:100%" onclick="openPurchaseForm()">3. Enter / Next → Supplier</button></div>
+</div>
+<div id="purchaseArea"></div>
+</div>
+<div class="card"><div id="purchaseTable"></div></div>
+</section>
+
+<section id="voucher" class="view">
+<div class="page-head"><div><h2>General Voucher</h2><div class="muted">Date → Voucher No. → Particular → Amount</div></div></div>
+<div class="card">
+<div class="voucher-top">
+<div><label>Voucher Date</label><input id="voucherDate" type="date"></div>
+<div><label>Voucher No.</label><input id="voucherNo" inputmode="numeric"></div>
+<div><button class="btn" style="width:100%" onclick="openVoucherForm()">Enter / Next → Voucher Entry</button></div>
+</div>
+<div id="voucherArea"></div>
+</div>
+<div class="card"><div id="voucherTable"></div></div>
+</section>
+
+<section id="ledger" class="view">
+<div class="page-head"><div><h2>Ledger</h2><div class="muted">सामने सिर्फ Party List — किसी भी Party पर tap करके Full Screen Ledger खोलें</div></div></div>
+<div class="card">
+<div class="formgrid">
+<div class="span2"><label>Search Party</label><input id="ledgerSearch" oninput="renderLedgerParties()" placeholder="Party name / mobile search"></div>
+<div><label>Day Group</label><select id="ledgerDay" onchange="renderLedgerParties()"><option value="">All Days</option></select></div>
+</div>
+</div>
+<div class="card"><div id="ledgerPartyList"></div></div>
+</section>
+
+<section id="parties" class="view">
+<div class="page-head"><div><h2>Party Master</h2><div class="muted">Details, collection day, due date, edit और ledger</div></div><button class="btn" onclick="openPartyForm()">+ New Party</button></div>
+<div class="card"><label>Search</label><input id="partySearch" oninput="renderParties()" placeholder="Party name / mobile / GST"></div>
+<div class="card"><div id="partyTable"></div></div>
+</section>
+
+<section id="daygroups" class="view">
+<div class="page-head"><div><h2>Day Groups — Collection Plan</h2><div class="muted">Sunday to Saturday parties</div></div></div>
+<div class="day-grid" id="dayCards"></div>
+<div class="card">
+<div class="page-head"><div><h3 id="dayReportTitle">Day Payment List</h3><div class="muted">Party name • Mobile • Amount Due</div></div><button class="btn" onclick="printDayReport()">PDF / Print</button></div>
+<div class="formgrid"><div><label>Select Day</label><select id="dayReportSelect" onchange="renderDayReport()"></select></div></div>
+<div id="dayReport"></div>
+</div>
+</section>
+
+<section id="items" class="view">
+<div class="page-head"><div><h2>Items / Stock</h2><div class="muted">Clothing master</div></div></div>
+<div class="card">
+<div class="formgrid">
+<div><label>Item Code</label><input id="itemCode"></div><div><label>Item Name</label><input id="itemName"></div><div><label>Category</label><input id="itemCategory"></div>
+<div><label>Size</label><input id="itemSize" placeholder="M, L, XL"></div><div><label>Color</label><input id="itemColor"></div><div><label>Opening Qty</label><input id="itemQty" type="number" value="0"></div>
+<div><label>Purchase Rate</label><input id="itemBuy" type="number"></div><div><label>Sale Rate</label><input id="itemSell" type="number"></div>
+</div>
+<button class="btn" onclick="saveItem()">Save Item</button>
+</div>
+<div class="card"><div id="itemTable"></div></div>
+</section>
+
+<section id="reports" class="view">
+<div class="page-head"><div><h2>Reports</h2><div class="muted">Professional print reports</div></div></div>
+<div class="toolbar">
+<button class="btn" onclick="reportTab('day',this)">Day</button><button class="btn light" onclick="reportTab('outstanding',this)">Outstanding</button><button class="btn light" onclick="reportTab('sales',this)">Sales</button><button class="btn light" onclick="reportTab('receipts',this)">Receipts</button>
+</div>
+<div id="reportArea"></div>
+</section>
+
+<section id="backup" class="view">
+<div class="page-head"><div><h2>Backup / Settings</h2><div class="muted">Voucher numbering और data backup</div></div></div>
+<div class="card">
+<h3>Next Voucher Numbers</h3>
+<div class="formgrid">
+<div><label>Next Sale No.</label><input id="setSaleNo" type="number"></div>
+<div><label>Next Receipt No.</label><input id="setReceiptNo" type="number"></div>
+<div><label>Next Purchase No.</label><input id="setPurchaseNo" type="number"></div>
+<div><label>Next Voucher No.</label><input id="setVoucherNo" type="number"></div>
+</div>
+<button class="btn" onclick="saveSequences()">Save Numbering</button>
+</div>
+<div class="card">
+<h3>Business Profile & Credit Policy</h3>
+<div class="formgrid">
+<div><label>Business Name</label><input id="setName"></div>
+<div class="span2"><label>Address</label><input id="setAddress"></div>
+<div><label>Contact</label><input id="setPhone"></div>
+<div><label>Default Credit Days</label><input id="setCreditDays" type="number" min="0"></div>
+<div><label>Overdue Warning After (days)</label><input id="setOverdueDays" type="number" min="1"></div>
+<div><label>Suggested Penalty / Month (%)</label><input id="setPenalty" type="number" min="0" step="0.1"></div>
+</div>
+<div class="toolbar"><button class="btn" onclick="saveBusinessSettings()">Save Business Settings</button></div>
+<div class="notice">Default policy: 30 days. After the warning period, the app marks the bill in red and calculates a suggested penalty at 2% per month. Actual charges should follow your written customer terms and applicable law.</div>
+</div>
+<div class="card">
+<div class="notice">JSON = full-fidelity backup. Excel (.xlsx) = easiest common editable backup. CSV = portable tables. Proprietary MARG/BUSY backup files are not safely generated without their exact format/specification.</div>
+<div class="toolbar">
+<button class="btn" onclick="downloadBackup()">Full JSON Backup</button>
+<button class="btn" onclick="downloadExcel()">Excel (.xlsx)</button>
+<button class="btn light" onclick="downloadCSVBundle()">CSV Export</button>
+<button class="btn light" onclick="document.getElementById('restore').click()">Restore JSON</button>
+<button class="btn light" onclick="document.getElementById('restoreExcel').click()">Restore Excel</button>
+<input id="restore" type="file" accept=".json" style="display:none" onchange="restoreBackup(event)">
+<input id="restoreExcel" type="file" accept=".xlsx,.xls" style="display:none" onchange="restoreExcel(event)">
+</div>
+</div>
+</section>
+
+<section id="print" class="view"><div id="printArea"></div></section>
+</main></div>
+
+<div class="modal" id="modal"><div class="sheet"><button class="x" onclick="closeModal()">×</button><div id="modalBody"></div></div></div>
+
 <script>
-const SUPABASE_URL="https://rpiviexppewafvaacgkg.supabase.co";
-const SUPABASE_PUBLISHABLE_KEY="sb_publishable_libqJNEbhBBkAgzxP6de9Q_Y5VdhGSd";
-const APP_URL="https://shobhitkuma502.github.io/shri-radhe-collection/";
-const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
-let SHOP_ID=null, parties=[], groups=[], sales=[], receipts=[];
-
-const $=id=>document.getElementById(id);
-const money=n=>"₹"+Number(n||0).toLocaleString("en-IN",{maximumFractionDigits:2});
-const today=()=>new Date().toISOString().slice(0,10);
-$("sdate").value=today(); $("rdate").value=today();
-
-function msg(t){$("authMsg").textContent=t}
-function status(t){$("status").textContent=t}
-
-function setAuthBusy(busy){
-  $("signupBtn").disabled=busy;
-  $("loginBtn").disabled=busy;
-  $("resendBtn").disabled=busy;
-  $("signupBtn").textContent=busy?"काम हो रहा है…":"पहली बार Account बनाएं";
-  $("loginBtn").textContent=busy?"रुकिए…":"Login";
-}
-async function signup(){
-  const email=$("email").value.trim(),password=$("password").value;
-  $("resendBtn").style.display="none";
-  if(!email)return msg("पहले सही Email डालें।");
-  if(password.length<6)return msg("Password कम से कम 6 characters का होना चाहिए।");
-  setAuthBusy(true);
-  const {data,error}=await sb.auth.signUp({email,password,options:{emailRedirectTo:APP_URL}});
-  setAuthBusy(false);
-  if(error){
-    const text=String(error.message||"");
-    if(/already registered|already been registered|user already exists/i.test(text)){
-      msg("यह Email पहले से registered है। अब Login करें।");
-    }else{
-      msg("Account नहीं बना: "+text);
-    }
-    return;
-  }
-  if(data.session){
-    msg("Account बन गया। App खोल रहे हैं…");
-    await start();
-  }else{
-    $("resendBtn").style.display="inline-block";
-    msg("Account बन गया है। आपके Email पर verification link भेजा गया है। Email verify करके फिर Login करें।");
-  }
-}
-async function resendVerification(){
-  const email=$("email").value.trim();
-  if(!email)return msg("Email डालें।");
-  setAuthBusy(true);
-  const {error}=await sb.auth.resend({type:"signup",email});
-  setAuthBusy(false);
-  if(error)return msg("Verification email नहीं भेजा गया: "+error.message);
-  msg("Verification email दोबारा भेज दिया गया। Inbox/Spam दोनों check करें।");
-}
-async function login(){
-  const email=$("email").value.trim(),password=$("password").value;
-  if(!email||!password)return msg("Email और password डालें।");
-  setAuthBusy(true);
-  const {data,error}=await sb.auth.signInWithPassword({email,password});
-  setAuthBusy(false);
-  if(error){
-    const text=String(error.message||"");
-    if(/email not confirmed/i.test(text)){
-      $("resendBtn").style.display="inline-block";
-      msg("Email अभी verify नहीं हुआ है। पहले verification link पर tap करें, फिर Login करें।");
-    }else{
-      msg("Login नहीं हुआ: "+text);
-    }
-    return;
-  }
-  if(data.session) await start();
-}
-
-async function start(){
-  status("Cloud connecting…");
-  const {data,error}=await sb.rpc("create_owner_shop",{
-    p_name:"Shri Radhe Collection",
-    p_address:"Neminath Catla, Uniara Rd, Nainwa, Bundi",
-    p_phone:"6376107751"
-  });
-  if(error){
-    status("Cloud error");
-    msg("Shop setup नहीं हुआ: "+error.message);
-    return;
-  }
-  SHOP_ID=data;
-  $("auth").style.display="none";$("app").style.display="block";
-  await load();
-}
-async function load(){
-  status("Loading cloud…");
-  const [g,p,s,r]=await Promise.all([
-    sb.from("groups").select("id,name").eq("shop_id",SHOP_ID).order("name"),
-    sb.from("parties").select("*").eq("shop_id",SHOP_ID).order("created_at"),
-    sb.from("sales").select("*").eq("shop_id",SHOP_ID).order("bill_date"),
-    sb.from("receipts").select("*").eq("shop_id",SHOP_ID).order("receipt_date")
-  ]);
-  for(const x of [g,p,s,r])if(x.error){msg(x.error.message);status("Cloud error");return}
-  groups=g.data||[];parties=p.data||[];sales=s.data||[];receipts=r.data||[];
-  fillSelects();renderAll();status("Cloud Connected ✓");
-}
-function fillSelects(){
-  $("pgroup").innerHTML=groups.map(x=>`<option value="${x.id}">${x.name}</option>`).join("");
-  const opts=parties.map(x=>`<option value="${x.id}">${esc(x.name)} — ${esc(x.mobile)}</option>`).join("");
-  ["sparty","rparty","lparty"].forEach(id=>$(id).innerHTML=opts);
-}
+const KEY="src_prof_v5";
+const settings=JSON.parse(localStorage.getItem("src_prof_settings")||"null")||{
+ name:"Shri Radhe Collection",
+ address:"Neminath Catla, Uniara Rd, Nainwa, Bundi",
+ phone:"6376107751",
+ creditDays:30,
+ overdueDays:30,
+ penaltyPercent:2
+};
+const firm={get name(){return settings.name},get address(){return settings.address},get phone(){return settings.phone}};
+const days=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+let db=JSON.parse(localStorage.getItem(KEY)||"null")||{parties:[],sales:[],receipts:[],purchases:[],vouchers:[],items:[],seq:{sale:215,receipt:1,purchase:1,voucher:1}};
+db.parties=db.parties||[];db.sales=db.sales||[];db.receipts=db.receipts||[];db.purchases=db.purchases||[];db.vouchers=db.vouchers||[];db.items=db.items||[];db.seq=db.seq||{};
+db.seq.sale=Number(db.seq.sale||((Math.max(0,...db.sales.map(x=>Number(x.billNo)||0)))+1||215));
+db.seq.receipt=Number(db.seq.receipt||((Math.max(0,...db.receipts.map(x=>Number(x.receiptNo)||0)))+1||1));
+db.seq.purchase=Number(db.seq.purchase||((Math.max(0,...db.purchases.map(x=>Number(x.billNo)||0)))+1||1));
+db.seq.voucher=Number(db.seq.voucher||((Math.max(0,...db.vouchers.map(x=>Number(x.no)||0)))+1||1));
+db.parties.forEach(p=>{if(!p.day)p.day="Monday"});
+function save(){localStorage.setItem(KEY,JSON.stringify(db));renderAll()}
+function today(){return new Date().toISOString().slice(0,10)}
+function money(n){return "₹"+Number(n||0).toLocaleString("en-IN",{maximumFractionDigits:2})}
 function esc(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
-async function addParty(){
-  const name=$("pname").value.trim(),mobile=$("pmobile").value.trim();
-  if(!name||!mobile)return alert("Party Name और Mobile जरूरी है।");
-  const {error}=await sb.from("parties").insert({
-    shop_id:SHOP_ID,group_id:$("pgroup").value,name,mobile,
-    gst:$("pgst").value.trim(),opening_balance:Number($("popen").value||0),address:$("paddr").value.trim()
-  });
-  if(error)return alert(error.message);
-  ["pname","pmobile","pgst","paddr","popen"].forEach(id=>$(id).value="");
-  await load();
+function uid(p){return p+Date.now().toString(36)+Math.random().toString(36).slice(2,7)}
+function go(id){document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));document.getElementById(id).classList.add("active");document.querySelectorAll(".navbtn").forEach(b=>b.classList.remove("active"));document.querySelectorAll(".navbtn").forEach(b=>{if((b.getAttribute("onclick")||"").includes("'"+id+"'"))b.classList.add("active")});renderAll()}
+function openModal(s){document.getElementById("modalBody").innerHTML=s;document.getElementById("modal").classList.add("show")}
+function closeModal(){document.getElementById("modal").classList.remove("show")}
+function partyBalance(p){return Number(p.opening||0)+db.sales.filter(x=>x.partyId===p.id).reduce((a,x)=>a+Number(x.total),0)-db.receipts.filter(x=>x.partyId===p.id).reduce((a,x)=>a+Number(x.amount),0)}
+function dueDateFor(p){return p.dueDate||"—"}
+function nextNo(type){return Number(db.seq[type]||1)}
+function bump(type,n){db.seq[type]=Number(n)+1}
+
+function openPartyForm(id=null){
+ const p=id?db.parties.find(x=>x.id===id):null;
+ openModal(`<h2>${p?"Edit Party":"New Party"}</h2><div class="formgrid">
+ <div><label>Party Name *</label><input id="pn" value="${esc(p?.name||"")}"></div>
+ <div><label>Mobile *</label><input id="pm" value="${esc(p?.mobile||"")}"></div>
+ <div><label>GST No.</label><input id="pg" value="${esc(p?.gst||"")}"></div>
+ <div><label>Opening Balance</label><input id="po" type="number" value="${Number(p?.opening||0)}"></div>
+ <div><label>Collection Day *</label><select id="pd">${days.map(d=>`<option ${d===(p?.day||"Monday")?"selected":""}>${d}</option>`).join("")}</select></div>
+ <div><label>Due Date</label><input id="pdu" type="date" value="${p?.dueDate||""}"></div>
+ <div class="span3"><label>Address</label><input id="pa" value="${esc(p?.address||"")}"></div>
+ </div>
+ <div class="toolbar"><button class="btn" onclick="saveParty('${id||""}')">${p?"Save Changes":"Save Party"}</button>${p?`<button class="btn light" onclick="closeModal();openLedger('${p.id}')">Open Ledger</button>`:""}</div>`)
 }
-async function addSale(){
-  const total=Number($("stotal").value);
-  if(!total)return alert("Amount डालें।");
-  const {error}=await sb.from("sales").insert({
-    shop_id:SHOP_ID,party_id:$("sparty").value,bill_no:$("sbill").value.trim(),
-    bill_date:$("sdate").value,total,payment_mode:$("smode").value,note:""
-  });
-  if(error)return alert(error.message);await load();
+function saveParty(id){
+ const name=document.getElementById("pn").value.trim(),mobile=document.getElementById("pm").value.trim();
+ if(!name||!mobile)return alert("Party Name और Mobile जरूरी है।");
+ if(db.parties.some(p=>p.mobile===mobile&&p.id!==id))return alert("यह mobile दूसरी Party में है।");
+ const p=id?db.parties.find(x=>x.id===id):{id:uid("P")};
+ Object.assign(p,{name,mobile,gst:document.getElementById("pg").value.trim(),opening:Number(document.getElementById("po").value||0),day:document.getElementById("pd").value,dueDate:document.getElementById("pdu").value,address:document.getElementById("pa").value.trim()});
+ if(!id)db.parties.push(p);closeModal();save()
 }
-async function addReceipt(){
-  const amount=Number($("ramount").value);
-  if(!amount)return alert("Amount डालें।");
-  const {error}=await sb.from("receipts").insert({
-    shop_id:SHOP_ID,party_id:$("rparty").value,receipt_no:$("rno").value.trim(),
-    receipt_date:$("rdate").value,amount,payment_mode:$("rmode").value,note:""
-  });
-  if(error)return alert(error.message);await load();
+
+function startSale(){go("sale");document.getElementById("saleDate").value=today();document.getElementById("saleNo").value=nextNo("sale");document.getElementById("salePartyArea").innerHTML=""}
+function openSalePartyPicker(){
+ const d=document.getElementById("saleDate").value||today();document.getElementById("saleDate").value=d;
+ document.getElementById("saleNo").value=document.getElementById("saleNo").value||nextNo("sale");
+ document.getElementById("salePartyArea").innerHTML=`<div class="card"><h3>Step 3 — Party List</h3><div class="formgrid" style="margin-top:10px"><div class="span2"><input id="salePartySearch" oninput="renderSalePartyList()" placeholder="Party name / mobile search"></div><div><select id="salePartyDay" onchange="renderSalePartyList()"><option value="">All Days</option>${days.map(x=>`<option>${x}</option>`).join("")}</select></div></div><div id="salePartyList"></div></div>`;
+ renderSalePartyList()
 }
-function balance(p){
-  return Number(p.opening_balance||0)
-    +sales.filter(x=>x.party_id===p.id).reduce((a,x)=>a+Number(x.total),0)
-    -receipts.filter(x=>x.party_id===p.id).reduce((a,x)=>a+Number(x.amount),0);
+function renderSalePartyList(){
+ const q=(document.getElementById("salePartySearch")?.value||"").toLowerCase(),day=document.getElementById("salePartyDay")?.value||"";
+ const arr=db.parties.filter(p=>(!day||p.day===day)&&(p.name+" "+p.mobile).toLowerCase().includes(q));
+ document.getElementById("salePartyList").innerHTML=arr.length?`<div class="tablewrap"><table><tr><th>Party Name</th><th>Mobile</th><th>Day</th><th>Current Due</th><th></th></tr>${arr.map(p=>`<tr><td><b>${esc(p.name)}</b></td><td>${esc(p.mobile)}</td><td>${esc(p.day||"")}</td><td class="${partyBalance(p)>0?"due":"credit"}">${money(Math.max(0,partyBalance(p)))}</td><td><button class="btn light" onclick="openSaleBill('${p.id}')">Select Party →</button></td></tr>`).join("")}</table></div>`:`<div class="muted">कोई Party नहीं मिली। Parties menu से पहले Party जोड़ें।</div>`
+}
+function addDays(dateStr,days){
+ const d=new Date((dateStr||today())+"T00:00:00");d.setDate(d.getDate()+Number(days||0));return d.toISOString().slice(0,10)
+}
+function openSaleBill(pid){
+ const p=db.parties.find(x=>x.id===pid),date=document.getElementById("saleDate").value||today(),no=document.getElementById("saleNo").value;
+ openModal(`<h2>Sale Bill — ${esc(p.name)}</h2><div class="muted">${esc(p.mobile)} • Voucher No. ${esc(no)}</div>
+ <div class="formgrid" style="margin-top:12px">
+ <div><label>Date</label><input id="bsdate" type="date" value="${date}"></div>
+ <div><label>Total Bill Amount *</label><input id="bsamt" type="number"></div>
+ <div><label>Due Date</label><input id="bsdue" type="date" value="${addDays(date,settings.creditDays)}"></div>
+ <div><label>Payment Mode</label><select id="bsmode"><option>Credit</option><option>Cash</option><option>UPI</option><option>Bank</option></select></div>
+ <div class="span2"><label>Particular / Items</label><textarea id="bspart" rows="2" placeholder="Item, size, color, qty आदि"></textarea></div>
+ </div>
+ <div class="toolbar"><button class="btn" onclick="saveSale('${p.id}','${esc(no)}',false)">Save</button><button class="btn green" onclick="saveSale('${p.id}','${esc(no)}',true)">Save & Print</button><button class="btn light" onclick="closeModal()">Cancel</button></div>`)
+}
+function saveSale(pid,no,printNow=false){
+ const amount=Number(document.getElementById("bsamt").value);if(!amount)return alert("Amount डालें।");
+ const p=db.parties.find(x=>x.id===pid),date=document.getElementById("bsdate").value||today();
+ const x={id:uid("S"),partyId:pid,partyName:p.name,billNo:String(no),date,total:amount,mode:document.getElementById("bsmode").value,particular:document.getElementById("bspart").value,dueDate:document.getElementById("bsdue").value||addDays(date,settings.creditDays)};
+ db.sales.push(x);bump("sale",Number(no));closeModal();save();
+ if(printNow)openPrintableSale(x);
+ setTimeout(()=>autoNextSale(date),220)
+}
+function autoNextSale(date){go("sale");document.getElementById("saleDate").value=date||today();document.getElementById("saleNo").value=nextNo("sale");openSalePartyPicker()}
+function renderReceiptPartyList(){
+ const q=(document.getElementById("receiptPartySearch")?.value||"").toLowerCase(),day=document.getElementById("receiptPartyDay")?.value||"";
+ const arr=db.parties.filter(p=>(!day||p.day===day)&&(p.name+" "+p.mobile).toLowerCase().includes(q));
+ document.getElementById("receiptPartyList").innerHTML=arr.length?`<div class="tablewrap"><table><tr><th>Party</th><th>Mobile</th><th>Current Due</th><th></th></tr>${arr.map(p=>`<tr><td><b>${esc(p.name)}</b></td><td>${esc(p.mobile)}</td><td class="due">${money(Math.max(0,partyBalance(p)))}</td><td><button class="btn green" onclick="openReceipt('${p.id}')">Receive →</button></td></tr>`).join("")}</table></div>`:`<div class="muted">कोई Party नहीं मिली।</div>`
+}
+function openReceipt(pid){
+ const p=db.parties.find(x=>x.id===pid),no=document.getElementById("receiptNo").value||nextNo("receipt"),date=document.getElementById("receiptDate").value||today();
+ openModal(`<h2>Receipt — ${esc(p.name)}</h2><div class="muted">${esc(p.mobile)} • Receipt No. ${esc(no)}</div>
+ <div class="formgrid" style="margin-top:12px"><div><label>Date</label><input id="rrdate" type="date" value="${date}"></div><div><label>Receipt Amount *</label><input id="rramt" type="number"></div><div><label>Mode</label><select id="rrmode"><option>Cash</option><option>UPI</option><option>Bank</option></select></div>
+ <div class="span3"><label>Note</label><input id="rrnote"></div></div>
+ <div class="toolbar"><button class="btn" onclick="saveReceipt('${p.id}','${esc(no)}',false)">Save</button><button class="btn green" onclick="saveReceipt('${p.id}','${esc(no)}',true)">Save & Print</button></div>`)
+}
+function saveReceipt(pid,no,printNow=false){
+ const amount=Number(document.getElementById("rramt").value);if(!amount)return alert("Amount डालें।");
+ const p=db.parties.find(x=>x.id===pid),date=document.getElementById("rrdate").value||today();
+ const x={id:uid("R"),partyId:pid,partyName:p.name,receiptNo:String(no),date,amount,mode:document.getElementById("rrmode").value,note:document.getElementById("rrnote").value};
+ db.receipts.push(x);bump("receipt",Number(no));closeModal();save();
+ if(printNow)openPrintableReceipt(x);
+ setTimeout(()=>autoNextReceipt(date),220)
+}
+function autoNextReceipt(date){go("receipt");document.getElementById("receiptDate").value=date||today();document.getElementById("receiptNo").value=nextNo("receipt");openReceiptPartyPicker()}
+function savePurchase(printNow=false){
+ const supplier=document.getElementById("pusupplier").value.trim(),total=Number(document.getElementById("putotal").value),no=Number(document.getElementById("puno").value||nextNo("purchase"));
+ if(!supplier||!total)return alert("Supplier और total जरूरी है");
+ const x={id:uid("U"),date:document.getElementById("pudate").value||today(),billNo:String(no),supplier,total,mode:document.getElementById("pumode").value,note:document.getElementById("punote").value};
+ db.purchases.push(x);bump("purchase",no);save();if(printNow)openPrintablePurchase(x);setTimeout(()=>autoNextPurchase(x.date),220)
+}
+function autoNextPurchase(date){go("purchase");document.getElementById("purchaseDate").value=date||today();document.getElementById("purchaseNo").value=nextNo("purchase");openPurchaseForm()}
+function saveVoucher(printNow=false){
+ const amount=Number(document.getElementById("vamt").value),no=Number(document.getElementById("vno").value||nextNo("voucher"));if(!amount)return alert("Amount डालें");
+ const x={id:uid("V"),date:document.getElementById("vdate").value||today(),no:String(no),type:document.getElementById("vtype").value,amount,particular:document.getElementById("vpart").value,note:document.getElementById("vnote").value};
+ db.vouchers.push(x);bump("voucher",no);save();if(printNow)openPrintableVoucher(x);setTimeout(()=>autoNextVoucher(x.date),220)
+}
+function autoNextVoucher(date){go("voucher");document.getElementById("voucherDate").value=date||today();document.getElementById("voucherNo").value=nextNo("voucher");openVoucherForm()}
+function saleAgeDays(x){const a=new Date((x.date||today())+"T00:00:00"),b=new Date(today()+"T00:00:00");return Math.floor((b-a)/86400000)}
+function isOverdue(x){return saleAgeDays(x)>Number(settings.overdueDays||30)}
+function penaltySuggestion(x){const months=Math.floor(saleAgeDays(x)/30);return isOverdue(x)?Number(x.total||0)*(Number(settings.penaltyPercent||2)/100)*Math.max(1,months):0}
+function overdueWarn(x){if(!isOverdue(x))return "";return `<div style="color:#b4232f;font-size:10px;font-weight:850">⚠ OVERDUE • ${settings.penaltyPercent}%/month suggested: ${money(penaltySuggestion(x))}</div>`}
+function openLedger(id){
+ const p=db.parties.find(x=>x.id===id);if(!p)return;
+ let running=Number(p.opening||0),sales=0,rec=0,rows="";
+ const es=[...db.sales.filter(x=>x.partyId===id).map(x=>({date:x.date,no:x.billNo,type:"Sale",amount:Number(x.total),sgn:1})),
+ ...db.receipts.filter(x=>x.partyId===id).map(x=>({date:x.date,no:x.receiptNo,type:"Received",amount:Number(x.amount),sgn:-1}))]
+ .sort((a,b)=>a.date.localeCompare(b.date)||String(a.no).localeCompare(String(b.no),undefined,{numeric:true}));
+ es.forEach(e=>{
+  running+=e.sgn*e.amount;
+  if(e.type==="Sale")sales+=e.amount;else rec+=e.amount;
+  const sx=db.sales.find(s=>s.partyId===id&&s.date===e.date&&String(s.billNo)===String(e.no));
+  rows+=`<tr><td>${esc(e.date)}</td><td>${esc(e.no)}${sx?overdueWarn(sx):""}</td><td>${e.type}</td><td class="num">${money(e.amount)}</td><td class="num"><b>${money(running)}</b></td></tr>`;
+ });
+ const current=Math.max(0,running);
+ openModal(`<div style="min-height:80vh">
+ <div class="page-head"><div><h2>${esc(p.name)} — Full Screen Ledger</h2><div class="muted">${esc(p.mobile)} • ${esc(p.address||"")} • Collection Day: ${esc(p.day||"")} • Due Date: ${esc(p.dueDate||"—")}</div></div>
+ <div class="toolbar"><button class="btn light" onclick="openPartyForm('${id}')">Edit Party</button><button class="btn" onclick="printLedger('${id}')">Print Ledger</button></div></div>
+ <div class="tablewrap"><table><tr><th>Bill/Receipt Date</th><th>Particular Bill/Receipt No.</th><th>Type</th><th>Amount Bill/Receipt</th><th>Total Amount</th></tr>${rows||'<tr><td colspan="5" class="muted">कोई entry नहीं है।</td></tr>'}</table></div>
+ <div class="kpi-row" style="margin-top:12px"><div class="kpi"><span class="muted">Total Sales</span><strong>${money(sales)}</strong></div><div class="kpi"><span class="muted">Total Receipt</span><strong>${money(rec)}</strong></div><div class="kpi"><span class="muted">Remaining Amount</span><strong class="${current>0?"due":"credit"}">${money(current)}</strong></div></div>
+ </div>`);
+}
+
+function renderLedgerParties(){
+ const q=(document.getElementById("ledgerSearch").value||"").toLowerCase(),day=document.getElementById("ledgerDay").value||"";
+ const arr=db.parties.filter(p=>(!day||p.day===day)&&(p.name+" "+p.mobile).toLowerCase().includes(q));
+ document.getElementById("ledgerPartyList").innerHTML=`<div class="tablewrap"><table><tr><th>Party Name</th><th>Mobile</th><th>Payment / Collection Day</th><th>Due Date</th><th>Amount Due</th></tr>${arr.map(p=>`<tr onclick="openLedger('${p.id}')" style="cursor:pointer"><td><b>${esc(p.name)}</b></td><td>${esc(p.mobile)}</td><td>${esc(p.day||"")}</td><td>${esc(dueDateFor(p))}</td><td class="${partyBalance(p)>0?"due":"credit"}">${money(Math.max(0,partyBalance(p)))}</td></tr>`).join("")||`<tr><td colspan="5" class="muted">Party नहीं मिली।</td></tr>`}</table></div>`
+}
+function renderParties(){
+ const q=(document.getElementById("partySearch").value||"").toLowerCase(),arr=db.parties.filter(p=>(p.name+" "+p.mobile+" "+(p.gst||"")).toLowerCase().includes(q));
+ document.getElementById("partyTable").innerHTML=`<div class="tablewrap"><table><tr><th>Party</th><th>Mobile</th><th>Day Group</th><th>Due Date</th><th>Current Due</th><th>Action</th></tr>${arr.map(p=>`<tr><td><b>${esc(p.name)}</b><div class="muted">${esc(p.address||"")}</div></td><td>${esc(p.mobile)}</td><td>${esc(p.day||"")}</td><td>${esc(dueDateFor(p))}</td><td class="${partyBalance(p)>0?"due":"credit"}">${money(Math.max(0,partyBalance(p)))}${(()=>{const n=db.sales.filter(s=>s.partyId===p.id&&isOverdue(s)).length;return n?`<div style="color:#b4232f;font-size:10px;font-weight:850">⚠ ${n} overdue</div>`:""})()}</td><td><div class="toolbar" style="margin:0"><button class="btn light" onclick="openLedger('${p.id}')">Ledger</button><button class="btn light" onclick="openPartyForm('${p.id}')">Edit</button></div></td></tr>`).join("")||`<tr><td colspan="6" class="muted">कोई Party नहीं है।</td></tr>`}</table></div>`
+}
+function renderDayGroups(){
+ document.getElementById("dayCards").innerHTML=days.map(d=>{const ps=db.parties.filter(p=>p.day===d),due=ps.reduce((a,p)=>a+Math.max(0,partyBalance(p)),0);return `<div class="day-card"><h4>${d}</h4><div class="count">${ps.length}</div><div class="muted">Parties</div><div class="due" style="margin-top:7px">${money(due)}</div><div class="muted">collection due</div></div>`}).join("");
+ const sel=document.getElementById("dayReportSelect"),old=sel.value;sel.innerHTML=days.map(d=>`<option>${d}</option>`).join("");if(days.includes(old))sel.value=old;renderDayReport()
+}
+function renderDayReport(){
+ const d=document.getElementById("dayReportSelect").value;
+ const arr=db.parties.filter(p=>p.day===d);
+ const tot=arr.reduce((a,p)=>a+Math.max(0,partyBalance(p)),0);
+ document.getElementById("dayReportTitle").textContent=d+" — Payment List";
+ document.getElementById("dayReport").innerHTML=`<div class="print-sheet day-preview">
+   <div class="print-head">
+     <div><h1>${esc(settings.name)}</h1><div>${esc(settings.address)}</div><div>Contact: ${esc(settings.phone)}</div></div>
+     <div class="text-right"><b>DAY PAYMENT LIST</b><br>Collection Day: ${esc(d)}<br>As on: ${esc(today())}</div>
+   </div>
+   <div style="margin-bottom:10px"><b>Party Count:</b> ${arr.length}</div>
+   <table class="print-table">
+     <tr><th>S.No.</th><th>Party Name</th><th>Mobile</th><th>Due Date</th><th>Amount Due</th></tr>
+     ${arr.map((p,i)=>`<tr><td>${i+1}</td><td>${esc(p.name)}</td><td>${esc(p.mobile)}</td><td>${esc(p.dueDate||"—")}</td><td class="text-right">${money(Math.max(0,partyBalance(p)))}</td></tr>`).join("")||`<tr><td colspan="5" class="text-right">इस दिन कोई Party नहीं।</td></tr>`}
+   </table>
+   <div class="print-totals">
+     <div class="print-total">Total Parties<b>${arr.length}</b></div>
+     <div class="print-total">Total Due<b>${money(tot)}</b></div>
+     <div class="print-total">Collection Day<b>${esc(d)}</b></div>
+   </div>
+   <div style="margin-top:28px;border-top:1px solid #aaa;padding-top:10px;font-size:11px">Prepared from Shri Radhe Collection accounts</div>
+ </div>`
+}
+function printDayReport(){
+ const d=document.getElementById("dayReportSelect").value;
+ const arr=db.parties.filter(p=>p.day===d);
+ const tot=arr.reduce((a,p)=>a+Math.max(0,partyBalance(p)),0);
+ const content=`<div class="print-sheet">
+   <div class="print-head">
+     <div><h1>${esc(settings.name)}</h1><div>${esc(settings.address)}</div><div>Contact: ${esc(settings.phone)}</div></div>
+     <div class="text-right"><b>DAY PAYMENT LIST</b><br>Collection Day: ${esc(d)}<br>As on: ${esc(today())}</div>
+   </div>
+   <div style="margin-bottom:10px"><b>Party Count:</b> ${arr.length}</div>
+   <table class="print-table">
+     <tr><th>S.No.</th><th>Party Name</th><th>Mobile</th><th>Due Date</th><th>Amount Due</th></tr>
+     ${arr.map((p,i)=>`<tr><td>${i+1}</td><td>${esc(p.name)}</td><td>${esc(p.mobile)}</td><td>${esc(p.dueDate||"—")}</td><td class="text-right">${money(Math.max(0,partyBalance(p)))}</td></tr>`).join("")||`<tr><td colspan="5">इस दिन कोई Party नहीं।</td></tr>`}
+   </table>
+   <div class="print-totals">
+     <div class="print-total">Total Parties<b>${arr.length}</b></div>
+     <div class="print-total">Total Due<b>${money(tot)}</b></div>
+     <div class="print-total">Collection Day<b>${esc(d)}</b></div>
+   </div>
+   <div style="margin-top:28px;border-top:1px solid #aaa;padding-top:10px;font-size:11px">Prepared from Shri Radhe Collection accounts</div>
+ </div>`;
+ printShell(content, d+" Payment List")
+}
+function reportTab(type){
+ const d=today();
+ if(type==="day"){
+  const s=db.sales.filter(x=>x.date===d),r=db.receipts.filter(x=>x.date===d),p=db.purchases.filter(x=>x.date===d);
+  document.getElementById("reportArea").innerHTML=`<div class="card"><h3>Today ${d}</h3><div class="kpi-row"><div class="kpi">Sales<strong>${money(s.reduce((a,x)=>a+Number(x.total),0))}</strong></div><div class="kpi">Receipts<strong>${money(r.reduce((a,x)=>a+Number(x.amount),0))}</strong></div><div class="kpi">Purchase<strong>${money(p.reduce((a,x)=>a+Number(x.total),0))}</strong></div></div></div>`
+ }else if(type==="outstanding"){
+  document.getElementById("reportArea").innerHTML=`<div class="card"><div class="page-head"><h3>Outstanding</h3><button class="btn" onclick="window.print()">Print</button></div><div class="tablewrap"><table><tr><th>Party</th><th>Mobile</th><th>Day</th><th>Due Date</th><th>Amount</th></tr>${db.parties.map(p=>`<tr><td>${esc(p.name)}</td><td>${esc(p.mobile)}</td><td>${esc(p.day||"")}</td><td>${esc(dueDateFor(p))}</td><td class="due">${money(Math.max(0,partyBalance(p)))}</td></tr>`).join("")}</table></div></div>`
+ }else{
+  const arr=type==="sales"?db.sales:db.receipts;
+  document.getElementById("reportArea").innerHTML=`<div class="card"><h3>${type==="sales"?"Sales Register":"Receipt Register"}</h3><div class="tablewrap"><table><tr><th>Date</th><th>No.</th><th>Party</th><th>Amount</th><th>Print</th></tr>${arr.slice().reverse().map(x=>{const ow=type==="sales"&&isOverdue(x)?`<div style="color:#b4232f;font-size:10px;font-weight:850">⚠ Overdue • due ${esc(x.dueDate||"")}</div>`:"";return `<tr><td>${x.date}</td><td>${esc(x.billNo||x.receiptNo)}${ow}</td><td>${esc(x.partyName)}</td><td>${money(x.total||x.amount)}</td><td><button class="smallbtn" onclick="${type==="sales"?`openPrintableSaleById('${x.id}')`:`openPrintableReceiptById('${x.id}')`}">Print</button></td></tr>`}).join("")||`<tr><td colspan="5">No entries</td></tr>`}</table></div></div>`
+ }
 }
 function renderAll(){
-  $("partyCount").textContent=parties.length;
-  $("salesTotal").textContent=money(sales.reduce((a,x)=>a+Number(x.total),0));
-  $("receivedTotal").textContent=money(receipts.reduce((a,x)=>a+Number(x.amount),0));
-  $("outstanding").textContent=money(parties.reduce((a,p)=>a+Math.max(0,balance(p)),0));
-  $("partyTable").innerHTML=`<table><tr><th>Party</th><th>Mobile</th><th>Group</th><th>Outstanding</th></tr>`+
-    parties.map(p=>`<tr><td>${esc(p.name)}</td><td>${esc(p.mobile)}</td><td>${esc(groups.find(g=>g.id===p.group_id)?.name||"")}</td><td>${money(Math.max(0,balance(p)))}</td></tr>`).join("")+"</table>";
-  $("salesTable").innerHTML=`<table><tr><th>Date</th><th>Bill</th><th>Party</th><th>Amount</th></tr>`+
-    sales.map(x=>`<tr><td>${x.bill_date}</td><td>${esc(x.bill_no)}</td><td>${esc(parties.find(p=>p.id===x.party_id)?.name||"")}</td><td>${money(x.total)}</td></tr>`).join("")+"</table>";
-  $("receiptTable").innerHTML=`<table><tr><th>Date</th><th>Receipt</th><th>Party</th><th>Amount</th></tr>`+
-    receipts.map(x=>`<tr><td>${x.receipt_date}</td><td>${esc(x.receipt_no)}</td><td>${esc(parties.find(p=>p.id===x.party_id)?.name||"")}</td><td>${money(x.amount)}</td></tr>`).join("")+"</table>";
-  renderLedger();
+ document.getElementById("todayChip").textContent=new Date().toLocaleDateString("en-IN",{day:"2-digit",month:"short",year:"numeric"});
+ const d=today();
+ document.getElementById("mSale").textContent=money(db.sales.filter(x=>x.date===d).reduce((a,x)=>a+Number(x.total),0));
+ document.getElementById("mReceipt").textContent=money(db.receipts.filter(x=>x.date===d).reduce((a,x)=>a+Number(x.amount),0));
+ document.getElementById("mPurchase").textContent=money(db.purchases.filter(x=>x.date===d).reduce((a,x)=>a+Number(x.total),0));
+ document.getElementById("mDue").textContent=money(db.parties.reduce((a,p)=>a+Math.max(0,partyBalance(p)),0));
+ if(document.getElementById("ledgerDay").options.length===1)document.getElementById("ledgerDay").innerHTML='<option value="">All Days</option>'+days.map(d=>`<option>${d}</option>`).join("");
+ renderLedgerParties();renderParties();renderDayGroups();
+ document.getElementById("purchaseTable").innerHTML=`<div class="tablewrap"><table><tr><th>Date</th><th>Voucher</th><th>Supplier</th><th>Total</th><th>Mode</th></tr>${db.purchases.slice().reverse().map(x=>`<tr><td>${x.date}</td><td>${esc(x.billNo)}</td><td>${esc(x.supplier)}</td><td>${money(x.total)}</td><td>${esc(x.mode)}</td></tr>`).join("")||`<tr><td colspan="5" class="muted">No purchase entries</td></tr>`}</table></div>`;
+ document.getElementById("voucherTable").innerHTML=`<div class="tablewrap"><table><tr><th>Date</th><th>Voucher</th><th>Type</th><th>Particular</th><th>Amount</th></tr>${db.vouchers.slice().reverse().map(x=>`<tr><td>${x.date}</td><td>${esc(x.no)}</td><td>${esc(x.type)}</td><td>${esc(x.particular)}</td><td>${money(x.amount)}</td></tr>`).join("")||`<tr><td colspan="5" class="muted">No voucher entries</td></tr>`}</table></div>`;
+ document.getElementById("itemTable").innerHTML=`<div class="tablewrap"><table><tr><th>Code</th><th>Item</th><th>Category</th><th>Size</th><th>Color</th><th>Qty</th><th>Buy</th><th>Sale</th></tr>${db.items.map(x=>`<tr><td>${esc(x.code)}</td><td>${esc(x.name)}</td><td>${esc(x.category)}</td><td>${esc(x.size)}</td><td>${esc(x.color)}</td><td>${x.qty}</td><td>${money(x.buy)}</td><td>${money(x.sell)}</td></tr>`).join("")||`<tr><td colspan="8" class="muted">No items</td></tr>`}</table></div>`;
+ const te=db.sales.filter(x=>x.date===d).map(x=>`<div style="padding:8px 0;border-bottom:1px solid #eee5e8">Sale • ${esc(x.billNo)} • ${esc(x.partyName)} <b style="float:right">${money(x.total)}</b></div>`).join("")+db.receipts.filter(x=>x.date===d).map(x=>`<div style="padding:8px 0;border-bottom:1px solid #eee5e8">Receipt • ${esc(x.receiptNo)} • ${esc(x.partyName)} <b style="float:right">${money(x.amount)}</b></div>`).join("");
+ document.getElementById("todayEntries").innerHTML=te||'<span class="muted">आज कोई entry नहीं।</span>';
+ const todayDay=days[new Date().getDay()];
+ const dues=db.parties.filter(p=>p.day===todayDay&&partyBalance(p)>0).map(p=>`<div style="padding:8px 0;border-bottom:1px solid #eee5e8"><b>${esc(p.name)}</b><span style="float:right" class="due">${money(partyBalance(p))}</span></div>`).join("");
+ document.getElementById("todayDue").innerHTML=dues||'<span class="muted">आज की collection list खाली है।</span>';
+ document.getElementById("setSaleNo").value=nextNo("sale");document.getElementById("setReceiptNo").value=nextNo("receipt");document.getElementById("setPurchaseNo").value=nextNo("purchase");document.getElementById("setVoucherNo").value=nextNo("voucher");
 }
-function renderLedger(){
-  const id=$("lparty").value;if(!id){$("ledgerTable").innerHTML="";return}
-  const p=parties.find(x=>x.id===id);if(!p)return;
-  let running=Number(p.opening_balance||0);
-  const entries=[
-    ...sales.filter(x=>x.party_id===id).map(x=>({date:x.bill_date,no:x.bill_no,type:"Sale",amount:Number(x.total),sign:1})),
-    ...receipts.filter(x=>x.party_id===id).map(x=>({date:x.receipt_date,no:x.receipt_no,type:"Received",amount:Number(x.amount),sign:-1}))
-  ].sort((a,b)=>a.date.localeCompare(b.date)||a.no.localeCompare(b.no));
-  let rows="";
-  for(const e of entries){running+=e.sign*e.amount;rows+=`<tr><td>${e.date}</td><td>${esc(e.no)}</td><td>${e.type}</td><td>${money(e.amount)}</td><td>${money(running)}</td></tr>`}
-  $("ledgerTable").innerHTML=`<p><b>${esc(p.name)}</b> — Current Amount: <b>${money(Math.max(0,running))}</b></p>
-  <div style="overflow:auto"><table><tr><th>Bill/Receipt Date</th><th>Particular Bill/Receipt No.</th><th>Type</th><th>Amount Bill/Receipt</th><th>Total Amount</th></tr>${rows||'<tr><td colspan="5">कोई entry नहीं है।</td></tr>'}</table></div>`;
+function saveSequences(){
+ db.seq.sale=Number(document.getElementById("setSaleNo").value||1);db.seq.receipt=Number(document.getElementById("setReceiptNo").value||1);db.seq.purchase=Number(document.getElementById("setPurchaseNo").value||1);db.seq.voucher=Number(document.getElementById("setVoucherNo").value||1);save();alert("Voucher numbering saved.")
 }
-function show(id){["parties","sales","receipts","ledger"].forEach(x=>$(x).style.display=x===id?"block":"none");}
-async function logout(){await sb.auth.signOut();location.reload()}
-if(location.hash && /access_token|refresh_token|type=signup/i.test(location.hash)){
-  setTimeout(()=>msg("Email verification complete. अब Login करें।"),500);
+function downloadBackup(){
+ const blob=new Blob([JSON.stringify({firm,exportedAt:new Date().toISOString(),data:db},null,2)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="Shri_Radhe_Collection_Backup_"+today()+".json";a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)
 }
-sb.auth.onAuthStateChange((event, session)=>{
-  if(event==="SIGNED_OUT"){
-    $("app").style.display="none";
-    $("auth").style.display="flex";
-  }
-});
-sb.auth.getSession().then(async ({data,error})=>{
-  if(error){msg("Session check error: "+error.message);return}
-  if(data.session) await start();
-});
+function restoreBackup(e){
+ const f=e.target.files?.[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const x=JSON.parse(r.result);if(!x.data?.parties)throw 0;db=x.data;db.seq=db.seq||{sale:1,receipt:1,purchase:1,voucher:1};save();alert("Backup restored.")}catch(_){alert("Invalid backup file.")}};r.readAsText(f)
+}
+function applyBusinessSettings(){
+ [["setName",settings.name],["setAddress",settings.address],["setPhone",settings.phone],["setCreditDays",settings.creditDays],["setOverdueDays",settings.overdueDays],["setPenalty",settings.penaltyPercent]].forEach(([id,v])=>{const el=document.getElementById(id);if(el)el.value=v})
+}
+function saveBusinessSettings(){
+ settings.name=document.getElementById("setName").value.trim()||settings.name;
+ settings.address=document.getElementById("setAddress").value.trim()||settings.address;
+ settings.phone=document.getElementById("setPhone").value.trim()||settings.phone;
+ settings.creditDays=Math.max(0,Number(document.getElementById("setCreditDays").value||30));
+ settings.overdueDays=Math.max(1,Number(document.getElementById("setOverdueDays").value||30));
+ settings.penaltyPercent=Math.max(0,Number(document.getElementById("setPenalty").value||2));
+ localStorage.setItem("src_prof_settings",JSON.stringify(settings));renderAll();alert("Business settings saved.")
+}
+function downloadExcel(){
+ if(!window.XLSX)return alert("Excel library load नहीं हुई। Internet on करके फिर कोशिश करें।");
+ const wb=XLSX.utils.book_new();
+ const sheets={
+  Parties:db.parties.map(p=>({ID:p.id,"Party Name":p.name,Mobile:p.mobile,GST:p.gst||"",Address:p.address||"","Collection Day":p.day||"","Due Date":p.dueDate||"",Opening:Number(p.opening||0),CurrentDue:Math.max(0,partyBalance(p))})),
+  Sales:db.sales.map(x=>({ID:x.id,Date:x.date,VoucherNo:x.billNo,Party:x.partyName,Amount:Number(x.total),Mode:x.mode||"",DueDate:x.dueDate||"",Particular:x.particular||""})),
+  Receipts:db.receipts.map(x=>({ID:x.id,Date:x.date,ReceiptNo:x.receiptNo,Party:x.partyName,Amount:Number(x.amount),Mode:x.mode||"",Note:x.note||""})),
+  Purchases:db.purchases.map(x=>({ID:x.id,Date:x.date,VoucherNo:x.billNo,Supplier:x.supplier,Amount:Number(x.total),Mode:x.mode||"",Note:x.note||""})),
+  Vouchers:db.vouchers.map(x=>({ID:x.id,Date:x.date,VoucherNo:x.no,Type:x.type,Particular:x.particular||"",Amount:Number(x.amount),Note:x.note||""})),
+  Items:db.items.map(x=>({ID:x.id,Code:x.code,Item:x.name,Category:x.category,Size:x.size,Color:x.color,Qty:Number(x.qty||0),PurchaseRate:Number(x.buy||0),SaleRate:Number(x.sell||0)})),
+  Settings:[{BusinessName:settings.name,Address:settings.address,Contact:settings.phone,CreditDays:settings.creditDays,OverdueWarningDays:settings.overdueDays,PenaltyPerMonthPercent:settings.penaltyPercent}]
+ };
+ Object.entries(sheets).forEach(([name,rows])=>XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(rows),name));
+ XLSX.writeFile(wb,"Shri_Radhe_Collection_"+today()+".xlsx")
+}
+function csvEsc(v){return '"'+String(v??"").replace(/"/g,'""')+'"'}
+function downloadCsv(name,rows){
+ const keys=Object.keys(rows[0]||{ID:""}),text=[keys.map(csvEsc).join(","),...rows.map(r=>keys.map(k=>csvEsc(r[k])).join(","))].join("\\n");
+ const blob=new Blob(["\\ufeff"+text],{type:"text/csv;charset=utf-8"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)
+}
+function downloadCSVBundle(){
+ downloadCsv("Shri_Radhe_Parties.csv",db.parties.map(p=>({ID:p.id,Party:p.name,Mobile:p.mobile,GST:p.gst||"",Address:p.address||"",Day:p.day||"",DueDate:p.dueDate||"",Opening:p.opening||0,CurrentDue:Math.max(0,partyBalance(p))})));
+ setTimeout(()=>downloadCsv("Shri_Radhe_Sales.csv",db.sales.map(x=>({ID:x.id,Date:x.date,VoucherNo:x.billNo,Party:x.partyName,Amount:x.total,Mode:x.mode||"",DueDate:x.dueDate||"",Particular:x.particular||""}))),200);
+ setTimeout(()=>downloadCsv("Shri_Radhe_Receipts.csv",db.receipts.map(x=>({ID:x.id,Date:x.date,ReceiptNo:x.receiptNo,Party:x.partyName,Amount:x.amount,Mode:x.mode||"",Note:x.note||""}))),400)
+}
+function restoreExcel(ev){
+ const f=ev.target.files?.[0];if(!f||!window.XLSX)return;
+ const r=new FileReader();r.onload=()=>{
+  try{
+   const wb=XLSX.read(r.result,{type:"array"}),json=s=>s?XLSX.utils.sheet_to_json(s,{defval:""}):[];
+   const ps=json(wb.Sheets.Parties),ss=json(wb.Sheets.Sales),rs=json(wb.Sheets.Receipts),pus=json(wb.Sheets.Purchases),vs=json(wb.Sheets.Vouchers),its=json(wb.Sheets.Items),setr=json(wb.Sheets.Settings);
+   if(!ps.length&&!ss.length&&!rs.length&&!pus.length&&!vs.length&&!its.length)throw Error();
+   if(!confirm("Current data replace करके Excel backup restore करना है?"))return;
+   db.parties=ps.map(r=>({id:r.ID||uid("P"),name:r["Party Name"]||r.Party||"",mobile:r.Mobile||"",gst:r.GST||"",address:r.Address||"",day:r["Collection Day"]||r.Day||"Monday",dueDate:r["Due Date"]||r.DueDate||"",opening:Number(r.Opening||0)})).filter(p=>p.name);
+   db.sales=ss.map(r=>({id:r.ID||uid("S"),date:r.Date||today(),billNo:String(r.VoucherNo||r["Voucher No."]||""),partyName:r.Party||"",partyId:(db.parties.find(p=>p.name===r.Party)||{}).id||"",total:Number(r.Amount||0),mode:r.Mode||"Credit",dueDate:r.DueDate||addDays(r.Date||today(),settings.creditDays),particular:r.Particular||""})).filter(x=>x.partyId);
+   db.receipts=rs.map(r=>({id:r.ID||uid("R"),date:r.Date||today(),receiptNo:String(r.ReceiptNo||r["Receipt No."]||""),partyName:r.Party||"",partyId:(db.parties.find(p=>p.name===r.Party)||{}).id||"",amount:Number(r.Amount||0),mode:r.Mode||"Cash",note:r.Note||""})).filter(x=>x.partyId);
+   db.purchases=pus.map(r=>({id:r.ID||uid("U"),date:r.Date||today(),billNo:String(r.VoucherNo||r["Voucher No."]||""),supplier:r.Supplier||"",total:Number(r.Amount||0),mode:r.Mode||"Credit",note:r.Note||""}));
+   db.vouchers=vs.map(r=>({id:r.ID||uid("V"),date:r.Date||today(),no:String(r.VoucherNo||r["Voucher No."]||""),type:r.Type||"Expense",particular:r.Particular||"",amount:Number(r.Amount||0),note:r.Note||""}));
+   db.items=its.map(r=>({id:r.ID||uid("I"),code:r.Code||"",name:r.Item||"",category:r.Category||"",size:r.Size||"",color:r.Color||"",qty:Number(r.Qty||0),buy:Number(r.PurchaseRate||r["Purchase Rate"]||0),sell:Number(r.SaleRate||r["Sale Rate"]||0)}));
+   if(setr[0]){settings.name=setr[0].BusinessName||settings.name;settings.address=setr[0].Address||settings.address;settings.phone=setr[0].Contact||settings.phone;settings.creditDays=Number(setr[0].CreditDays||settings.creditDays);settings.overdueDays=Number(setr[0].OverdueWarningDays||settings.overdueDays);settings.penaltyPercent=Number(setr[0].PenaltyPerMonthPercent||settings.penaltyPercent);localStorage.setItem("src_prof_settings",JSON.stringify(settings))}
+   db.seq.sale=Math.max(1,...db.sales.map(x=>Number(x.billNo)||0))+1;db.seq.receipt=Math.max(1,...db.receipts.map(x=>Number(x.receiptNo)||0))+1;db.seq.purchase=Math.max(1,...db.purchases.map(x=>Number(x.billNo)||0))+1;db.seq.voucher=Math.max(1,...db.vouchers.map(x=>Number(x.no)||0))+1;
+   save();alert("Excel restore completed.")
+  }catch(e){alert("Excel file supported app format में नहीं है।")}
+ };r.readAsArrayBuffer(f)
+}
+function printShell(content,title){
+ const w=window.open("","_blank");if(!w)return alert("Popup blocked है। Browser में popups allow करें।");
+ w.document.write(`<html><head><title>${esc(title)}</title><style>body{font-family:Arial,sans-serif;background:#fff;margin:0;padding:20px;color:#111}.print-sheet{max-width:850px;margin:auto}.print-head{display:flex;justify-content:space-between;border-bottom:2px solid #111;padding-bottom:12px;margin-bottom:12px}.print-head h1{margin:0;font-size:24px}.print-table{width:100%;border-collapse:collapse}.print-table th,.print-table td{border:1px solid #bbb;padding:8px;font-size:12px}.print-totals{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}.print-total{border:1px solid #bbb;padding:9px}.print-total b{display:block;font-size:17px}.text-right{text-align:right}</style></head><body>${content}<script>window.onload=()=>window.print()<\/script></body></html>`);w.document.close()
+}
+function openPrintableSale(x){
+ const p=db.parties.find(p=>p.id===x.partyId);
+ const content=`<div class="print-sheet"><div class="print-head"><div><h1>${firm.name}</h1><div>${firm.address}</div><div>Contact: ${firm.phone}</div></div><div class="text-right"><b>SALE BILL</b><br>Bill No.: ${esc(x.billNo)}<br>Date: ${esc(x.date)}<br>Due Date: ${esc(x.dueDate||addDays(x.date,settings.creditDays))}</div></div><div><b>Party:</b> ${esc(x.partyName)}<br><b>Mobile:</b> ${esc(p?.mobile||"")}<br><b>Address:</b> ${esc(p?.address||"")}</div><table class="print-table" style="margin-top:15px"><tr><th>Particular</th><th>Type</th><th>Amount</th></tr><tr><td>${esc(x.particular||"Sale")}</td><td>Sale</td><td class="text-right">${money(x.total)}</td></tr></table><div class="print-totals"><div class="print-total">Bill Amount<b>${money(x.total)}</b></div><div class="print-total">Payment Mode<b>${esc(x.mode)}</b></div><div class="print-total">Current Due<b>${money(Math.max(0,partyBalance(p||{id:x.partyId})))}</b></div></div><p style="margin-top:28px">For ${firm.name}<span style="float:right">Authorized Signatory</span></p></div>`;
+ printShell(content,"Sale Bill "+x.billNo)
+}
+function openPrintableReceipt(x){
+ const p=db.parties.find(p=>p.id===x.partyId);
+ const content=`<div class="print-sheet"><div class="print-head"><div><h1>${firm.name}</h1><div>${firm.address}</div><div>Contact: ${firm.phone}</div></div><div class="text-right"><b>RECEIPT</b><br>Receipt No.: ${esc(x.receiptNo)}<br>Date: ${esc(x.date)}</div></div><div><b>Received From:</b> ${esc(x.partyName)}<br><b>Mobile:</b> ${esc(p?.mobile||"")}<br><b>Payment Mode:</b> ${esc(x.mode)}</div><table class="print-table" style="margin-top:15px"><tr><th>Particular</th><th>Type</th><th>Amount</th></tr><tr><td>Payment Received</td><td>Received</td><td class="text-right">${money(x.amount)}</td></tr></table><div class="print-totals"><div class="print-total">Receipt Amount<b>${money(x.amount)}</b></div><div class="print-total">Mode<b>${esc(x.mode)}</b></div><div class="print-total">Remaining Due<b>${money(Math.max(0,partyBalance(p||{id:x.partyId})))}</b></div></div><p style="margin-top:28px">For ${firm.name}<span style="float:right">Authorized Signatory</span></p></div>`;
+ printShell(content,"Receipt "+x.receiptNo)
+}
+function openPrintablePurchase(x){
+ const content=`<div class="print-sheet"><div class="print-head"><div><h1>${firm.name}</h1><div>${firm.address}</div><div>Contact: ${firm.phone}</div></div><div class="text-right"><b>PURCHASE</b><br>Voucher No.: ${esc(x.billNo)}<br>Date: ${esc(x.date)}</div></div><div><b>Supplier:</b> ${esc(x.supplier)}</div><table class="print-table" style="margin-top:15px"><tr><th>Particular / Note</th><th>Mode</th><th>Amount</th></tr><tr><td>${esc(x.note||"Purchase")}</td><td>${esc(x.mode)}</td><td class="text-right">${money(x.total)}</td></tr></table><p style="margin-top:28px">For ${firm.name}<span style="float:right">Authorized Signatory</span></p></div>`;printShell(content,"Purchase "+x.billNo)
+}
+function openPrintableVoucher(x){
+ const content=`<div class="print-sheet"><div class="print-head"><div><h1>${firm.name}</h1><div>${firm.address}</div><div>Contact: ${firm.phone}</div></div><div class="text-right"><b>VOUCHER</b><br>No.: ${esc(x.no)}<br>Date: ${esc(x.date)}</div></div><table class="print-table"><tr><th>Type</th><th>Particular</th><th>Amount</th></tr><tr><td>${esc(x.type)}</td><td>${esc(x.particular)}</td><td class="text-right">${money(x.amount)}</td></tr></table><div style="margin-top:12px"><b>Note:</b> ${esc(x.note||"")}</div><p style="margin-top:28px">For ${firm.name}<span style="float:right">Authorized Signatory</span></p></div>`;printShell(content,"Voucher "+x.no)
+}
+function openPrintableSaleById(id){const x=db.sales.find(a=>a.id===id);if(x)openPrintableSale(x)}
+function openPrintableReceiptById(id){const x=db.receipts.find(a=>a.id===id);if(x)openPrintableReceipt(x)}
+function printLedger(id){
+ const p=db.parties.find(x=>x.id===id);if(!p)return;
+ let running=Number(p.opening||0),rows="",sales=0,rec=0;
+ const es=[...db.sales.filter(x=>x.partyId===id).map(x=>({date:x.date,no:x.billNo,type:"Sale",amount:Number(x.total),sgn:1})),...db.receipts.filter(x=>x.partyId===id).map(x=>({date:x.date,no:x.receiptNo,type:"Received",amount:Number(x.amount),sgn:-1}))].sort((a,b)=>a.date.localeCompare(b.date)||String(a.no).localeCompare(String(b.no),undefined,{numeric:true}));
+ es.forEach(e=>{running+=e.sgn*e.amount;if(e.type==="Sale")sales+=e.amount;else rec+=e.amount;const sx=db.sales.find(s=>s.partyId===id&&s.date===e.date&&String(s.billNo)===String(e.no));const warn=sx?overdueWarn(sx):"";rows+=`<tr><td>${esc(e.date)}</td><td>${esc(e.no)}${warn}</td><td>${e.type}</td><td class="num">${money(e.amount)}</td><td class="num"><b>${money(running)}</b></td></tr>`});
+ const content=`<div class="print-sheet"><div class="print-head"><div><h1>${firm.name}</h1><div>${firm.address}</div><div>${firm.phone}</div></div><div class="text-right"><b>PARTY LEDGER</b><br>${esc(p.name)}<br>${esc(p.mobile)}</div></div><div style="margin-bottom:10px">Collection Day: <b>${esc(p.day||"")}</b> &nbsp; Due Date: <b>${esc(dueDateFor(p))}</b></div><table class="print-table"><tr><th>Bill/Receipt Date</th><th>Particular Bill/Receipt No.</th><th>Type</th><th>Amount Bill/Receipt</th><th>Total Amount</th></tr>${rows||'<tr><td colspan="5">No entries</td></tr>'}</table><div class="print-totals"><div class="print-total">Total Sales<b>${money(sales)}</b></div><div class="print-total">Total Receipt<b>${money(rec)}</b></div><div class="print-total">Remaining Amount<b>${money(Math.max(0,running))}</b></div></div></div>`;
+ printShell(content,"Ledger - "+p.name)
+}
+renderAll();
 </script>
 </body>
 </html>
