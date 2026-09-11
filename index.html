@@ -69,53 +69,11 @@ body.cloud-ready .layout{display:grid}
 <div id="cloudGate" style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:18px;background:#f4f1f2">
   <div class="card" style="width:min(470px,100%);border-top:5px solid #6f2034">
     <h1 style="margin:0;color:#6f2034">Shri Radhe Collection</h1>
-    <p class="muted">Cloud Accounts — एक ही data, कई devices</p>
-    <div class="notice" style="margin:12px 0">
-      Owner account से login करें। फिलहाल यही login laptop, Papa के mobile और management phone में इस्तेमाल किया जा सकता है। सभी devices एक ही cloud data पर काम करेंगे।
-    </div>
-    <label>Email</label><input id="authEmail" type="email" autocomplete="email" placeholder="Owner email">
-    <label>Password</label><input id="authPassword" type="password" autocomplete="current-password" placeholder="Password">
-    <div class="toolbar">
-      <button class="btn" onclick="cloudLogin()">Login</button>
-      <button class="btn light" onclick="cloudSignup()">पहली बार Account बनाएं</button>
-    </div>
+    <p class="muted">Secure Cloud App — 3 devices, same data</p>
+    <div class="notice" style="margin:12px 0">Email verification नहीं। सिर्फ 6-digit App Passkey से app खुलेगा। Passkey server पर hash के रूप में verify होती है।</div>
+    <label>App Passkey</label><input id="passkeyInput" type="password" inputmode="numeric" maxlength="6" autocomplete="off" placeholder="6-digit Passkey">
+    <div class="toolbar"><button class="btn" onclick="passkeyLogin()">Open Shri Radhe Collection</button></div>
     <div id="authMessage" class="muted"></div>
-  </div>
-</div>
-
-
-<div id="passkeyGate" style="display:none;min-height:100vh;align-items:center;justify-content:center;padding:18px;background:#f4f1f2">
-  <div class="card" style="width:min(470px,100%);border-top:5px solid #6f2034">
-    <h1 style="margin:0;color:#6f2034">Shri Radhe Collection</h1>
-    <p class="muted">App Passkey</p>
-
-    <div id="passkeyEnter">
-      <div class="notice" style="margin:12px 0">
-        Email verification वही रहेगी। पहली बार verified Owner login के बाद यह 6-digit Passkey इस device पर save होगी। फिर app सीधे Passkey से खुलेगी।
-      </div>
-      <label>Passkey</label>
-      <input id="passkeyInput" type="password" inputmode="numeric" maxlength="6" autocomplete="off" placeholder="6-digit Passkey">
-      <div class="toolbar">
-        <button class="btn" onclick="unlockPasskey()">Open App</button>
-        <button class="btn light" onclick="resetPasskeyAndLogin()">Forgot Passkey</button>
-      </div>
-      <div id="passkeyMsg" class="muted"></div>
-    </div>
-
-    <div id="passkeySetup" style="display:none">
-      <div class="notice" style="margin:12px 0">
-        Email verification complete है। अब अपना 6-digit App Passkey बनाओ। यही Passkey आप laptop, Papa के mobile और management phone तीनों पर रख सकते हो।
-      </div>
-      <label>Create Passkey</label>
-      <input id="newPasskey" type="password" inputmode="numeric" maxlength="6" autocomplete="off" placeholder="6 digits">
-      <label>Confirm Passkey</label>
-      <input id="confirmPasskey" type="password" inputmode="numeric" maxlength="6" autocomplete="off" placeholder="फिर से 6 digits">
-      <div class="toolbar">
-        <button class="btn" onclick="createPasskey()">Create & Open App</button>
-        <button class="btn light" onclick="useEmailLoginInstead()">Use Email Login</button>
-      </div>
-      <div id="passkeySetupMsg" class="muted"></div>
-    </div>
   </div>
 </div>
 
@@ -341,89 +299,27 @@ function go(id){
 function openModal(s){$("modalBody").innerHTML=s;$("modal").classList.add("show")}
 function closeModal(){$("modal").classList.remove("show")}
 
-async function cloudSignup(){
- const email=$("authEmail").value.trim(),password=$("authPassword").value;
- if(!email||password.length<6)return authMsg("सही email और कम से कम 6 characters का password डालें।");
- authMsg("Account बनाया जा रहा है…");
- const {data:d,error}=await sb.auth.signUp({email,password,options:{emailRedirectTo:APP_URL}});
- if(error)return authMsg("Account नहीं बना: "+error.message);
- if(d.session){await boot(d.session);return}
- authMsg("Account बन गया। Email verification complete करके फिर Login करें।");
-}
-async function cloudLogin(){
- const email=$("authEmail").value.trim(),password=$("authPassword").value;
- if(!email||!password)return authMsg("Email और password डालें।");
- authMsg("Login हो रहा है…");
- const {data:d,error}=await sb.auth.signInWithPassword({email,password});
- if(error)return authMsg("Login नहीं हुआ: "+error.message);
- await boot(d.session);
-}
-async function cloudLogout(){await sb.auth.signOut();document.body.classList.remove("cloud-ready","passkey-open");location.reload()}
-
-const PASSKEY_KEY="shri_radhe_app_passkey_v1";
-
-async function hashPasskey(pin){
- const bytes=new TextEncoder().encode(pin);
- const hash=await crypto.subtle.digest("SHA-256",bytes);
- return Array.from(new Uint8Array(hash)).map(b=>b.toString(16).padStart(2,"0")).join("");
-}
-function hasPasskey(){return !!localStorage.getItem(PASSKEY_KEY)}
-function showPasskeyEnter(){
- document.body.classList.remove("cloud-ready");
- document.body.classList.add("passkey-open");
- $("passkeyEnter").style.display="block";
- $("passkeySetup").style.display="none";
- $("passkeyInput").value="";
- $("passkeyMsg").textContent="";
-}
-function showPasskeySetup(){
- document.body.classList.remove("cloud-ready");
- document.body.classList.add("passkey-open");
- $("passkeyEnter").style.display="none";
- $("passkeySetup").style.display="block";
- $("newPasskey").value="";
- $("confirmPasskey").value="";
- $("passkeySetupMsg").textContent="";
-}
-async function createPasskey(){
- const a=$("newPasskey").value.trim(),b=$("confirmPasskey").value.trim();
- if(!/^\d{6}$/.test(a))return $("passkeySetupMsg").textContent="Passkey exactly 6 digits की रखें।";
- if(a!==b)return $("passkeySetupMsg").textContent="दोनों Passkey same नहीं हैं।";
- localStorage.setItem(PASSKEY_KEY,await hashPasskey(a));
- $("passkeySetupMsg").textContent="Passkey created. App खोल रहे हैं…";
- openAppAfterPasskey();
-}
-async function unlockPasskey(){
+async function passkeyLogin(){
  const p=$("passkeyInput").value.trim();
- if(!/^\d{6}$/.test(p))return $("passkeyMsg").textContent="6-digit Passkey डालें।";
- const saved=localStorage.getItem(PASSKEY_KEY);
- if(!saved)return showPasskeySetup();
- if(await hashPasskey(p)!==saved)return $("passkeyMsg").textContent="Passkey गलत है।";
- openAppAfterPasskey();
+ if(!/^\d{6}$/.test(p))return authMsg("6-digit Passkey डालें।");
+ authMsg("Secure cloud login हो रहा है…");
+ let {data:sess}=await sb.auth.getSession();
+ if(!sess?.session){
+   const r=await sb.auth.signInAnonymously();
+   if(r.error)return authMsg("Cloud login नहीं हुआ: "+r.error.message);
+   sess=r.data;
+ }
+ const r=await sb.rpc("login_with_passkey",{p_passkey:p});
+ if(r.error)return authMsg("Passkey गलत है या cloud setup नहीं हुआ: "+r.error.message);
+ await boot(sess.session||sess);
 }
-function resetPasskeyAndLogin(){
- localStorage.removeItem(PASSKEY_KEY);
- document.body.classList.remove("passkey-open","cloud-ready");
- $("passkeyInput").value="";
- $("passkeyMsg").textContent="";
- sb.auth.signOut().finally(()=>location.reload());
-}
-function useEmailLoginInstead(){
- localStorage.removeItem(PASSKEY_KEY);
- document.body.classList.remove("passkey-open");
- $("authMessage").textContent="अब Email + Password से Login करें।";
-}
-function openAppAfterPasskey(){
- document.body.classList.remove("passkey-open");
- document.body.classList.add("cloud-ready");
- $("passkeyGate").style.display="none";
- renderAll();
-}
+async function cloudLogout(){await sb.auth.signOut();document.body.classList.remove("cloud-ready");location.reload()}
+
 async function boot(session){
  currentUser=session?.user;if(!currentUser)return;
  document.body.classList.remove("cloud-ready","passkey-open");
  status("Cloud: Connecting…");
- const {data:shop,error}=await sb.rpc("create_owner_shop",{p_name:"Shri Radhe Collection",p_address:"Neminath Catla, Uniara Rd, Nainwa, Bundi",p_phone:"6376107751"});
+ const {data:shop,error}=await sb.rpc("get_my_shop_id");
  if(error||!shop){
    status("Cloud: Error");
    authMsg("Cloud shop connect नहीं हुआ.\n"+(error?.message||"Shop ID नहीं मिला।"));
