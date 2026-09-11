@@ -50,11 +50,16 @@ tbody tr:hover{background:#fdf9fa}.num,.text-right{text-align:right}.due{color:v
  body{background:#fff}.topbar,.sidebar,.no-print{display:none!important}.layout{display:block}.main{padding:0}.view{display:none!important}.print-target{display:block!important}.card{box-shadow:none;border:0}
  .print-sheet{border:0;max-width:none;padding:10px}
 }
-body.passkey-open #cloudGate{display:none}
-body.passkey-open #passkeyGate{display:flex}
-body.cloud-ready #cloudGate,body.cloud-ready #passkeyGate{display:none}
+/* HARD AUTH GATE */
+body:not(.cloud-ready) .topbar,
+body:not(.cloud-ready) .layout{display:none!important}
+body:not(.cloud-ready){overflow:hidden}
+body.passkey-open #cloudGate{display:none!important}
+body.passkey-open #passkeyGate{display:flex!important}
+body.cloud-ready #cloudGate,
+body.cloud-ready #passkeyGate{display:none!important}
 body.cloud-ready .topbar{display:block}
-body.cloud-ready .layout{display:grid}body.cloud-ready .topbar{display:block}body.cloud-ready .layout{display:grid}
+body.cloud-ready .layout{display:grid}
 </style>
 <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -156,7 +161,7 @@ body.cloud-ready .layout{display:grid}body.cloud-ready .topbar{display:block}bod
 <button class="btn" onclick="startSale()"><span>Sale</span><b>Date → Voucher No. → Party List</b></button>
 <button class="btn green" onclick="startReceipt()"><span>Receipt</span><b>Date → Voucher No. → Party List</b></button>
 <button class="btn light" onclick="startPurchase()"><span>Purchase</span><b>Date → Voucher No. → Supplier</b></button>
-<button class="btn light" onclick="go('voucher')"><span>Voucher</span><b>Date → Voucher No. → Entry</b></button>
+<button class="btn light" onclick="go('voucher')"><span>Voucher</span><b>Date → Voucher No. → Entry</b></button><button class="btn light" onclick="openPartyForm()"><span>Party</span><b>नई Party जोड़ें</b></button>
 </div>
 </div>
 <div class="cards">
@@ -309,6 +314,8 @@ body.cloud-ready .layout{display:grid}body.cloud-ready .topbar{display:block}bod
 <div class="modal" id="modal"><div class="sheet"><button class="x" onclick="closeModal()">×</button><div id="modalBody"></div></div></div>
 
 <script>
+document.body.classList.remove("cloud-ready","passkey-open");
+
 const SUPABASE_URL="https://rpiviexppewafvaacgkg.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY="sb_publishable_libqJNEbhBBkAgzxP6de9Q_Y5VdhGSd";
 const APP_URL="https://shobhitkuma502.github.io/shri-radhe-collection/";
@@ -414,20 +421,32 @@ function openAppAfterPasskey(){
 }
 async function boot(session){
  currentUser=session?.user;if(!currentUser)return;
+ document.body.classList.remove("cloud-ready","passkey-open");
  status("Cloud: Connecting…");
  const {data:shop,error}=await sb.rpc("create_owner_shop",{p_name:"Shri Radhe Collection",p_address:"Neminath Catla, Uniara Rd, Nainwa, Bundi",p_phone:"6376107751"});
- if(error){authMsg("Shop setup नहीं हुआ: "+error.message);status("Cloud: Error");return}
+ if(error||!shop){
+   status("Cloud: Error");
+   authMsg("Cloud shop connect नहीं हुआ.\n"+(error?.message||"Shop ID नहीं मिला।"));
+   return;
+ }
  SHOP_ID=shop;
- await ensureBusinessSettings();
- await ensureSequences();
- await loadCloud();
- subscribeRealtime();
- setTodayFields();
- applySettingsToUI();
- if(hasPasskey()) showPasskeyEnter(); else showPasskeySetup();
- status("Cloud: Ready");
+ try{
+   await ensureBusinessSettings();
+   await ensureSequences();
+   const ok=await loadCloud();
+   if(!ok)throw new Error("Cloud data load failed");
+   subscribeRealtime();
+   setTodayFields();
+   applySettingsToUI();
+   if(hasPasskey())showPasskeyEnter();else showPasskeySetup();
+   status("Cloud: Ready");
+ }catch(e){
+   SHOP_ID=null;
+   document.body.classList.remove("cloud-ready","passkey-open");
+   status("Cloud: Error");
+   authMsg("Cloud setup error:\n"+(e?.message||e));
+ }
 }
-
 async function ensureBusinessSettings(){
  const q=await sb.from("business_settings").select("*").eq("shop_id",SHOP_ID).limit(1);
  if(q.data?.length){data.settings=q.data[0];return}
@@ -446,11 +465,18 @@ async function loadCloud(){
   sb.from("items").select("*").eq("shop_id",SHOP_ID).order("item_name"),
   sb.from("business_settings").select("*").eq("shop_id",SHOP_ID).limit(1)
  ]);
- for(const x of q)if(x.error){console.error(x.error);status("Cloud: Error");return}
+ const bad=q.find(x=>x.error);
+ if(bad){
+   console.error(bad.error);
+   status("Cloud: Error");
+   authMsg("Cloud data load error:\n"+bad.error.message);
+   return false;
+ }
  [data.parties,data.sales,data.receipts,data.purchases,data.vouchers,data.items]=q.slice(0,6).map(x=>x.data||[]);
  data.settings=q[6].data?.[0]||data.settings;
  applySettingsToUI();
  status("Cloud: Connected ✓");
+ return true;
 }
 function subscribeRealtime(){
  try{sb.removeAllChannels()}catch(e){}
@@ -459,7 +485,7 @@ function subscribeRealtime(){
     async()=>{await loadCloud();renderAll()}).subscribe();
  });
 }
-async function syncNow(){if(!SHOP_ID)return;await loadCloud();renderAll()}
+async function syncNow(){if(!SHOP_ID)return;const ok=await loadCloud();if(ok)renderAll()}
 
 async function reserveNo(type){
  const {data:n,error}=await sb.rpc("reserve_voucher_no",{p_shop_id:SHOP_ID,p_voucher_type:type});
@@ -599,11 +625,29 @@ function renderParties(){
  $("partyTable").innerHTML=`<div class="tablewrap"><table><tr><th>Party</th><th>Mobile</th><th>Day</th><th>Due Date</th><th>Due</th><th>Action</th></tr>${arr.map(p=>`<tr><td><b>${esc(p.name)}</b><div class="muted">${esc(p.address||"")}</div></td><td>${esc(p.mobile)}</td><td>${esc(p.collection_day||"")}</td><td>${esc(p.due_date||"—")}</td><td class="${partyBalance(p.id)>0?"due":"credit"}">${money(Math.max(0,partyBalance(p.id)))}</td><td><button class="btn light" onclick="openLedger('${p.id}')">Ledger</button> <button class="btn light" onclick="openPartyForm('${p.id}')">Edit</button></td></tr>`).join("")||`<tr><td colspan="6">कोई Party नहीं है।</td></tr>`}</table></div>`
 }
 async function saveParty(id){
- const payload={name:$("pn").value.trim(),mobile:$("pm").value.trim(),gst:$("pg").value.trim(),opening_balance:Number($("po").value||0),collection_day:$("pd").value,due_date:$("pdu").value||null,address:$("pa").value.trim()};
- if(!payload.name||!payload.mobile)return alert("Party Name और Mobile जरूरी है।");
- if(id){const r=await sb.from("parties").update(payload).eq("shop_id",SHOP_ID).eq("id",id).select().single();if(r.error)return alert(r.error.message)}
- else{const r=await sb.from("parties").insert({...payload,shop_id:SHOP_ID}).select().single();if(r.error)return alert(r.error.message)}
- closeModal();await loadCloud();renderAll()
+ if(!SHOP_ID)return alert("Cloud connect नहीं हुआ है. पहले Login और Passkey पूरा करें.");
+ const payload={
+   name:$("pn").value.trim(),
+   mobile:$("pm").value.trim(),
+   gst:$("pg").value.trim(),
+   opening_balance:Number($("po").value||0),
+   collection_day:$("pd").value,
+   due_date:$("pdu").value||null,
+   address:$("pa").value.trim()
+ };
+ if(!payload.name||!payload.mobile)return alert("Party Name और Mobile जरूरी है.");
+ if(data.parties.some(p=>p.mobile===payload.mobile && p.id!==id))return alert("यह Mobile Number दूसरी Party में पहले से है.");
+ const res=id
+   ?await sb.from("parties").update(payload).eq("shop_id",SHOP_ID).eq("id",id).select().single()
+   :await sb.from("parties").insert({...payload,shop_id:SHOP_ID}).select().single();
+ if(res.error){
+   alert("Party save नहीं हुई.\n\nSupabase error:\n"+res.error.message);
+   return;
+ }
+ closeModal();
+ await loadCloud();
+ renderAll();
+ alert(id?"Party updated successfully.":"Party added successfully.");
 }
 function openPartyForm(id=null){
  const p=id?data.parties.find(x=>x.id===id):null;
